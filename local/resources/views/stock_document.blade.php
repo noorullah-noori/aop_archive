@@ -1,0 +1,333 @@
+@extends('layouts.master')
+@section('title','جابجایی سند')
+@section('content')
+  <div class="portlet light">
+  	<div class="portlet-title">
+
+      <div class="caption">
+          <i class="fa fa-plus font-green-sharp"></i>
+          <span class="caption-subject font-green-sharp bold uppercase">@yield('title')</span>
+      </div>
+  	</div>
+  	<div class="portlet-body form">
+      {{-- print <alerts></alerts> if present --}}
+      @component('components.alert')
+        @slot('alert_type')
+           success
+        @endslot
+      @endcomponent
+      <form role="form" class="form-horizontal" action="{{route('stock_document',$document->id)}}" enctype="multipart/form-data" method="post">
+          {{csrf_field()}}
+          <div class="form-wizard">
+            <div class="form-body">
+              <ul class="nav nav-pills nav-justified steps">
+                <li class="active">
+                  <a href="#tab1" class="step active">
+                    <span class="number">
+                    1 </span>
+                    <span class="desc">
+                    <i class="fa fa-check"></i> ثبت اسناد </span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#tab2" class="step">
+                    <span class="number">
+                    2 </span>
+                    <span class="desc">
+                    <i class="fa fa-check"></i> تاییدی اسناد </span>
+                  </a>
+                </li>
+                <li>
+                  <a  class="step">
+                    <span class="number">
+                    3 </span>
+                    <span class="desc">
+                    <i class="fa fa-check"></i> جابجایی اسناد </span>
+                  </a>
+                </li>
+
+              </ul>
+              <div id="bar" class="progress progress-striped" role="progressbar">
+                <div class="progress-bar progress-bar-success" style="width:65%;">
+                </div>
+              </div>
+
+          </div>
+          <div class="form-body">
+            <h3 class="form-section">معلومات عمومی سند</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">شماره</label>
+                        <div class="col-md-9">
+                            <input type="number" name="document_number" disabled="disabled" value="{{$document->number}}" placeholder="شماره" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">تاریخ</label>
+                        <div class="col-md-9">
+                            <input type="text" name="document_date" disabled="disabled" value="{{$document->date}}" placeholder="تاریخ" class="form-control persian_date">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label col-md-3">نوع سند</label>
+                  <div class="col-md-9">
+                      <select class="form-control select2" disabled="disabled" name="document_categories" id="categories_id">
+                          <option value="{{$document->category_id}}">{{$document->category->name}}</option>
+                      </select>
+                    </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label col-md-3">تعداد اوراق</label>
+                  <div class="col-md-9">
+                    <input type="number" name="document_page_count" disabled="disabled" value="{{$document->total_pages}}" placeholder="تعداد صفحات" class="form-control">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label col-md-3">مرسل</label>
+                  <div class="col-md-9">
+                       <select class="form-control select2" disabled="disabled" name="document_department" id="department_id">
+                           <option value="{{$document->department_id}}">{{$document->department->name}}</option>
+                       </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label col-md-3">مرسل الیه </label>
+                  <div class="col-md-9">
+                    <input type="text" name="receiver" disabled="disabled"   value="{{$document->receiver}}" placeholder="مرسل الیه " class="form-control ">
+
+                  </div>
+                </div>
+              </div>
+             </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label col-md-3">موضوع</label>
+                  <div class="col-md-9">
+                    <textarea name="document_subject" value="" disabled="disabled" lang="fa" placeholder="موضوع" rows="2" class="form-control">{{$document->subject}}</textarea>
+                  </div>
+                </div>
+              </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label col-md-3">ضمایم</label>
+                  <div class="col-md-9">
+
+                    <textarea name="description" value=""  lang="fa" disabled="disabled" placeholder="ضمایم" rows="2" class="form-control">{{$document->description}}</textarea>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label col-md-3">لسان سند</label>
+                  <div class="col-md-9">
+                      <select class="form-control select2" disabled="disabled" name="document_department" id="department_id">
+                          <option value="{{$document->document_language_id}}">{{$document->document_language->language_name}}</option>
+                      </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+              <h3 class="form-section">موقعیت فزیکی سند</h3>
+                <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label col-md-3">بلاک</label>
+                    <div class="col-md-9">
+                      <select name="block" class="form-control">
+                        <option value="">بلاک</option>
+                        <option value="01">01</option>
+                        <option value="02">02</option>
+                        <option value="03">03</option>
+                        <option value="04">04</option>
+                      </select>
+                        {{-- <input type="number" name="block" value="{{old('block')}}" placeholder="بلاک" class="form-control"> --}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label col-md-3">بخش</label>
+                    <div class="col-md-9">
+                      <select name="section" class="form-control">
+                        <option value="">بخش</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="E">E</option>
+                        <option value="F">F</option>
+                        <option value="G">G</option>
+                        <option value="H">H</option>
+                        <option value="I">I</option>
+                        <option value="J">J</option>
+                      </select>
+                      {{-- <input type="number" name="sequence" value="{{old('sequence')}}" placeholder="قطار" class="form-control"> --}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+                <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label col-md-3">الماری</label>
+                    <div class="col-md-9">
+                      <input type="number" name="row" value="{{old('row')}}" placeholder="الماری" class="form-control">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label col-md-3">طرف الماری</label>
+                    <div class="col-md-9">
+                      <select class="form-control select2" name="cabinet_side" id="cabinet_side">
+                        <option value="">طرف الماری</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label col-md-3">روک</label>
+                    <div class="col-md-9">
+                      <select name="cabinet_row" class="form-control">
+                        <option value="">روک</option>
+                        <option value="01">01</option>
+                        <option value="02">02</option>
+                        <option value="03">03</option>
+                        <option value="04">04</option>
+                        <option value="05">05</option>
+                        <option value="06">06</option>
+                      </select>
+                       {{-- <input type="number" name="cabinet_row" value="{{old('cabinet_row')}}" placeholder="روک" class="form-control"> --}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label col-md-3">شماره دوسیه</label>
+                    <div class="col-md-9">
+                      {{-- <input type="number" name="cabinet_column" value="{{old('cabinet_column')}}" placeholder="شماره دوسیه" class="form-control"> --}}
+                      <select name="cabinet_column" class="form-control">
+                        <option value="">شماره دوسیه</option>
+                        <option value="01">01</option>
+                        <option value="02">02</option>
+                        <option value="03">03</option>
+                        <option value="04">04</option>
+                        <option value="05">05</option>
+                        <option value="06">06</option>
+                        <option value="07">07</option>
+                        <option value="08">08</option>
+                        <option value="09">09</option>
+                        <option value="10">10</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label col-md-3">جلد</label>
+                    <div class="col-md-9">
+                      <select class="form-control select2" name="edition" id="edition">
+                        <option value="">جلد</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label col-md-3"></label>
+                    <div class="col-md-9">
+                    <div class="md-checkbox has-default">
+                      <input type="checkbox" name="checkbox" id="checkbox9" class="md-check" checked>
+                      <label for="checkbox9">
+                      <span class="inc"></span>
+                      <span class="check"></span>
+                      <span class="box"></span>
+                      چاپ فهرست و لیبل
+                     </label>
+                    </div>
+              </div>
+            </div>
+              </div>
+
+              </div>
+          </div>
+
+          <div class="form-actions">
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label col-md-3"></label>
+                  <div class="col-md-9">
+                    <button type="submit" class="btn blue">ثبت</button>
+                    <button type="reset" href="#" id="reset_form" class="btn red">حذف اطلاعات</button>
+                    <a href="{{route('stockable_documents')}}" class="btn default">بازگشت</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+  </div>
+@endsection
+@push('custom-css')
+  <style media="screen">
+    .col-md-9 {
+      padding-right: 0;
+    }
+    .step:not(.active) {
+      color: #999;
+    }
+
+  </style>
+
+@endpush
+@push('custom-js')
+  <script>
+
+    // reset whole form
+    $('#reset_form').click(function() {
+      console.log($(this));
+    });
+  </script>
+
+@endpush
