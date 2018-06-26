@@ -26,12 +26,12 @@
                   </div>
               </div>
 
-              <div class="form-group">
+              {{-- <div class="form-group">
                   <label class="col-md-2 control-label">نوع سند (انگلیسی)</label>
                   <div class="col-md-10">
                     <input type="text" class="form-control" value="{{old('category_name_en')}}" name="category_name_en">
                   </div>
-              </div>
+              </div> --}}
 
               <div class="form-group">
                   <label class="col-md-2 control-label">توضیحات</label>

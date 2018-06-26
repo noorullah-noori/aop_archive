@@ -153,35 +153,39 @@
                 <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label class="control-label col-md-3">بلاک</label>
+                    <label class="control-label col-md-3">الماری</label>
                     <div class="col-md-9">
-                      <select name="block" class="form-control">
-                        <option value="">بلاک</option>
+                      <div class="col-md-4">
+                      <select name="cabinet_year" id="cabinet_year" class="form-control">
+                        <option value="">سال</option>
+                        <option value="1380">1380</option>
+                        <option value="1381">1381</option>
+                        <option value="1382">1382</option>
+                      </select>
+                      </div>
+                      <div class="col-md-4">
+                        <select name="cabinet_number" id="cabinet_number" class="form-control">
+                        <option value="">شماره</option>
                         <option value="01">01</option>
                         <option value="02">02</option>
                         <option value="03">03</option>
                         <option value="04">04</option>
                       </select>
+                      </div>
                         {{-- <input type="number" name="block" value="{{old('block')}}" placeholder="بلاک" class="form-control"> --}}
                     </div>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label class="control-label col-md-3">بخش</label>
+                    <label class="control-label col-md-3">روک</label>
                     <div class="col-md-9">
-                      <select name="section" class="form-control">
-                        <option value="">بخش</option>
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
-                        <option value="D">D</option>
-                        <option value="E">E</option>
-                        <option value="F">F</option>
-                        <option value="G">G</option>
-                        <option value="H">H</option>
-                        <option value="I">I</option>
-                        <option value="J">J</option>
+                      <select name="row" id="row" class="form-control">
+                        <option value="">روک</option>
+                        <option value="01">01</option>
+                        <option value="02">02</option>
+                        <option value="03">03</option>
+                        <option value="04">04</option>
                       </select>
                       {{-- <input type="number" name="sequence" value="{{old('sequence')}}" placeholder="قطار" class="form-control"> --}}
                     </div>
@@ -191,32 +195,11 @@
                 <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label class="control-label col-md-3">الماری</label>
-                    <div class="col-md-9">
-                      <input type="number" name="row" value="{{old('row')}}" placeholder="الماری" class="form-control">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="control-label col-md-3">طرف الماری</label>
-                    <div class="col-md-9">
-                      <select class="form-control select2" name="cabinet_side" id="cabinet_side">
-                        <option value="">طرف الماری</option>
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-                <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="control-label col-md-3">روک</label>
-                    <div class="col-md-9">
-                      <select name="cabinet_row" class="form-control">
-                        <option value="">روک</option>
+                    <label class="control-label col-md-3">فولدر</label>
+                     <div class="col-md-9">
+                      <div class="col-md-3">
+                        <select name="folder" id="folder" class="form-control">
+                        <option value="">فولدر</option>
                         <option value="01">01</option>
                         <option value="02">02</option>
                         <option value="03">03</option>
@@ -224,52 +207,16 @@
                         <option value="05">05</option>
                         <option value="06">06</option>
                       </select>
-                       {{-- <input type="number" name="cabinet_row" value="{{old('cabinet_row')}}" placeholder="روک" class="form-control"> --}}
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="control-label col-md-3">شماره دوسیه</label>
-                    <div class="col-md-9">
-                      {{-- <input type="number" name="cabinet_column" value="{{old('cabinet_column')}}" placeholder="شماره دوسیه" class="form-control"> --}}
-                      <select name="cabinet_column" class="form-control">
-                        <option value="">شماره دوسیه</option>
-                        <option value="01">01</option>
-                        <option value="02">02</option>
-                        <option value="03">03</option>
-                        <option value="04">04</option>
-                        <option value="05">05</option>
-                        <option value="06">06</option>
-                        <option value="07">07</option>
-                        <option value="08">08</option>
-                        <option value="09">09</option>
-                        <option value="10">10</option>
-                      </select>
+                      </div>
+                      <div class="col-md-3">
+                        <input type="text" name="folder_count" class="form-control" id="folder_count">
+                      </div>
+                        {{-- <input type="number" name="block" value="{{old('block')}}" placeholder="بلاک" class="form-control"> --}}
                     </div>
                   </div>
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="control-label col-md-3">جلد</label>
-                    <div class="col-md-9">
-                      <select class="form-control select2" name="edition" id="edition">
-                        <option value="">جلد</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label col-md-3"></label>
@@ -324,10 +271,31 @@
 @push('custom-js')
   <script>
 
-    // reset whole form
-    $('#reset_form').click(function() {
-      console.log($(this));
+  
+    $("#folder").change(function(){
+
+      var data = {};
+      
+      data['year'] = $("#cabinet_year").val();
+      data['number'] = $("#cabinet_number").val();
+      data['row'] = $("#row").val();
+      data['folder'] = $("#folder").val();
+      data['category_id'] = $("#categories_id").val();
+
+      $.ajax({
+        type: "GET",
+        data:data,
+        url: "{{url('get_folder_count/')}}",
+        success: function(result) {
+            result = Number(result);
+            $("#folder_count").val(result+1);
+        },
+        error: function(result) {
+            alert('error');
+        }
     });
+    });
+
   </script>
 
 @endpush

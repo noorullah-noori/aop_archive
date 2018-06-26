@@ -28,7 +28,6 @@
           <tr>
             <th>شماره</th>
             <th>نوعیت اسناد</th>
-            <th>نوعیت سند (انگلیسی)</th>
             <th>توضیحات</th>
             <th>عملیات</th>
           </tr>
@@ -99,7 +98,6 @@
       columns: [
           {data: 'id', name: 'id'},
           {data: 'name', name: 'name'},
-          {data: 'name_en', name: 'name_en'},
           {data: 'description', name: 'description'},
           {data: 'action', name: 'action', orderable: false, searchable: false}
       ]

@@ -88,13 +88,20 @@
                   اسناد تکمیل شده</a>
                 </li>
             @endcan
-            @can('show_stocked_edit_status')
+            @can ('show_completed_documents')
+              <li class="{{Request::is('folder_view')?'active':''}}">
+                <a href="{{route('folder_view')}}">
+                  <i class="icon-folder"></i>
+                فولدر ها</a>
+                </li>
+            @endcan
+           {{--  @can('show_stocked_edit_status')
               <li class="{{Request::is('show_stocked_edit_status')?'active':''}}">
                 <a href="{{route('show_stocked_edit_status')}}">
                   <i class="  icon-reload"></i>
                   وضعیت تصحیح جابجایی سند</a>
                 </li>
-            @endcan
+            @endcan --}}
           </ul>
         </li>
       @endhasanyrole
@@ -142,20 +149,6 @@
         </li>
       @endhasanyrole
       @hasrole('admin')
-        <li class="{{Request::is('stock_edit_requests') ? 'active' : ''}}">
-          <a href="#">
-          <i class="icon-loop"></i>
-          <span class="title">درخواستی های تصحیح</span>
-          <span class="arrow "></span>
-          </a>
-          <ul class="sub-menu" style="{{Request::is('stock_edit_requests') ?'display:block;':''}}">
-              <li class="{{Request::is('stock_edit_requests') ?'active':''}}">
-                <a href="{{route('stock_edit_requests')}}">
-                  <i class="icon-loop"></i>
-                  درخواستی جابجایی اسناد</a>
-                </li>
-          </ul>
-        </li>
 
       <li class="{{Request::is('documents_reports') || Request::is('enquiries_reports') ? 'active':''}}">
         <a href="javascript:;">
