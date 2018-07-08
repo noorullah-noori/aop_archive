@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 28, 2018 at 06:41 AM
+-- Generation Time: Jun 03, 2018 at 06:24 AM
 -- Server version: 10.1.28-MariaDB
 -- PHP Version: 7.1.10
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `archive`
+-- Database: `archive_aop`
 --
 
 -- --------------------------------------------------------
@@ -31,7 +31,6 @@ SET time_zone = "+00:00";
 CREATE TABLE `categories` (
   `id` int(11) NOT NULL,
   `name` varchar(255) COLLATE utf32_persian_ci NOT NULL,
-  `name_en` varchar(255) COLLATE utf32_persian_ci DEFAULT NULL,
   `description` text COLLATE utf32_persian_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_persian_ci;
 
@@ -39,22 +38,8 @@ CREATE TABLE `categories` (
 -- Dumping data for table `categories`
 --
 
-INSERT INTO `categories` (`id`, `name`, `name_en`, `description`) VALUES
-(7, 'فرامین', 'faramin', NULL),
-(8, 'احکام', 'ahkam', NULL),
-(9, 'هدایت نامه ها', 'hedayat_nama_ha', NULL),
-(10, 'مصوبات', 'musawebat', NULL),
-(11, 'قوانین', 'qawanin', NULL),
-(12, 'طرزالعمل ها', 'tarzul_amal_ha', NULL),
-(13, 'مقرره ها', 'muqarara_ha', NULL),
-(14, 'اساس نامه ها', 'asas_nama_ha', NULL),
-(15, 'معاهدات', 'muahedat', NULL),
-(16, 'تفاهم نامه و یاداشت تفاهم نامه ها', 'tafahum_nama_wa_yadasht_tafahum_nama_ha', NULL),
-(17, 'پرتوکول ها', 'protocol_ha', NULL),
-(18, 'میثاق ها', 'misaq_ha', NULL),
-(19, 'مکاتب', 'makatib', NULL),
-(20, 'کتب شاهی', 'kutub_e_shahi', NULL),
-(21, 'اسناد ملکیت ها', 'asnad_e_melkiat_ha', NULL);
+INSERT INTO `categories` (`id`, `name`, `description`) VALUES
+(1, 'فرمان', 'بدون شرح');
 
 -- --------------------------------------------------------
 
@@ -73,9 +58,7 @@ CREATE TABLE `departments` (
 --
 
 INSERT INTO `departments` (`id`, `name`, `description`) VALUES
-(1, 'اداره امور', 'ندارد'),
-(2, 'ریاست دفتر', 'جمهوری اسلامی افغانستان'),
-(3, 'کمیسیون مستقل انتخابات', 'توضیحات ندارد');
+(1, 'اداره امور', 'بدون شرح');
 
 -- --------------------------------------------------------
 
@@ -112,13 +95,6 @@ CREATE TABLE `documents` (
   `approved_at` varchar(20) COLLATE utf32_persian_ci DEFAULT NULL,
   `rejected_at` varchar(20) COLLATE utf32_persian_ci DEFAULT NULL,
   `stocked_date` varchar(20) COLLATE utf32_persian_ci DEFAULT NULL,
-  `stock_edit_request_date` varchar(20) COLLATE utf32_persian_ci DEFAULT NULL,
-  `stock_edit_request_by` int(11) DEFAULT NULL,
-  `stock_edit_request_remarks` text COLLATE utf32_persian_ci,
-  `stock_edit_request_approve` int(2) DEFAULT NULL COMMENT '0->requested,1->approve,2->reject',
-  `stock_edit_request_reject_remarks` text COLLATE utf32_persian_ci,
-  `stock_edit_request_approve_by` int(11) DEFAULT NULL,
-  `stock_edit_request_approve_date` varchar(20) COLLATE utf32_persian_ci DEFAULT NULL,
   `receiver` varchar(255) COLLATE utf32_persian_ci DEFAULT NULL,
   `description` text COLLATE utf32_persian_ci COMMENT 'zama yam',
   `countries` text COLLATE utf32_persian_ci,
@@ -129,22 +105,8 @@ CREATE TABLE `documents` (
 -- Dumping data for table `documents`
 --
 
-INSERT INTO `documents` (`id`, `number`, `subject`, `date`, `total_pages`, `edition`, `block`, `section`, `row`, `cabinet_side`, `cabinet_row`, `cabinet_column`, `label`, `status`, `remarks`, `created_at`, `updated_at`, `department_id`, `category_id`, `created_by`, `updated_by`, `approve_reject_auth`, `stocked_by`, `stock_updated_by`, `stock_updated_date`, `approved_at`, `rejected_at`, `stocked_date`, `stock_edit_request_date`, `stock_edit_request_by`, `stock_edit_request_remarks`, `stock_edit_request_approve`, `stock_edit_request_reject_remarks`, `stock_edit_request_approve_by`, `stock_edit_request_approve_date`, `receiver`, `description`, `countries`, `document_language_id`) VALUES
-(26, 1, 'حکم ریاست جمهوری', '1397-02-15', 2, 6, '01', 'D', '3', 'A', 3, 2, '01-D-3-A-03-2-D6', 3, 'تعداد صفحات غلط است', '1397-02-15 14:36:41', '1397-02-15 15:38:18', 2, 8, 8, 8, 8, 8, 8, '1397-02-15 16:41:52', '1397-02-18 08:37:10', '1397-02-15 15:37:52', '1397-02-18 09:24:55', '1397-02-15 16:14:15', 8, 'شماره الماری غلط است', 1, NULL, NULL, NULL, '', '', NULL, 10),
-(27, 1, 'حکم ریاست جمهوری', '1397-02-15', 2, 9, '02', 'H', '03', 'B', 1, 23, '02-H-03-B-01-23-D9', 3, 're', '1397-02-15 14:36:41', '1397-02-15 15:38:18', 2, 8, 8, 8, 8, 8, 8, '1397-03-02 08:56:43', '1397-02-18 09:45:43', '1397-02-18 09:42:51', '1397-02-18 09:46:05', '1397-02-17 14:25:11', 8, 'sdf', 1, NULL, NULL, '1397-02-22 14:38:15', '', '', NULL, 10),
-(28, 11, 'test1', '1397-02-01', 4, 9, '01', 'A', NULL, 'A', 2, 2, '01-A-A-02-2-9', 3, NULL, '1397-02-18 08:35:56', NULL, 3, 9, 8, NULL, 8, 8, 8, '1397-02-18 09:23:18', '1397-02-18 08:37:40', NULL, '1397-02-18 08:44:57', '1397-02-18 09:13:59', 8, 'test 1', 1, NULL, NULL, '1397-02-18 09:14:50', '', '', NULL, 9),
-(29, 2, 'test2', '1397-02-01', 3, 5, '01', 'A', NULL, 'A', 1, 4, '01-A-56-A-01-4-D5', 3, 'rejected for test', '1397-02-18 08:36:40', '1397-02-18 09:09:43', 2, 10, 8, 8, 8, 8, NULL, NULL, '1397-02-18 09:10:35', '1397-02-18 08:39:38', '1397-02-18 09:11:01', '1397-02-18 09:12:17', 8, 'cabinet number is wrong', 2, 'file is crashed', NULL, '1397-02-18 09:12:55', '', '', NULL, 10),
-(30, 4, 'تست', '1397-02-04', 4, 7, '04', 'F', NULL, 'B', 4, 23, '04-F-4-B-04-23-D7', 3, NULL, '1397-02-18 09:31:09', NULL, 3, 9, 8, NULL, 8, 8, NULL, NULL, '1397-02-18 09:31:21', NULL, '1397-02-18 09:31:45', '1397-02-18 09:32:41', 8, 'for test', 2, 'test', NULL, '1397-02-18 14:28:28', '', '', NULL, 11),
-(31, 1, 'تست', '1397-02-03', 2, 8, '02', 'C', '07', 'A', 1, 6, '02-C-07-A-01-06-D8', 3, NULL, '1397-02-22 14:25:11', NULL, 2, 11, 8, NULL, 8, 8, 8, '1397-03-02 09:00:22', '1397-02-22 14:25:56', NULL, '1397-02-22 14:27:06', '1397-03-02 08:59:48', 8, 'asasa', 1, NULL, NULL, '1397-03-02 09:00:07', '', '', NULL, 10),
-(32, 34, 'فف', '1397-02-04', 3, 1, '01', 'A', '08', 'A', 1, 2, '01-A-08-A-01-02-D1', 3, 'sdaf', '1397-02-25 09:00:51', NULL, 2, 7, 8, NULL, 8, 8, NULL, NULL, '1397-02-31 10:02:56', '1397-02-25 10:02:38', '1397-02-31 10:44:22', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', NULL, 11),
-(33, 56, 'فثسف', '1397-02-15', 3, 6, '03', 'F', '45', 'B', 2, 54432, '03-F-45-B-02-54432-D6', 3, NULL, '1397-02-25 09:38:37', '1397-02-25 10:02:14', 3, 8, 8, 8, 8, 8, NULL, NULL, '1397-02-25 10:44:48', NULL, '1397-02-25 14:52:35', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1aop', 'سند1', NULL, 11),
-(34, 4544, 'آزمایشی', '1397-02-23', 4, 6, '04', 'I', '44', 'A', 2, 4444, '04-I-44-A-02-4444-D6', 3, NULL, '1397-02-25 14:31:42', NULL, 3, 9, 8, NULL, 8, 8, NULL, NULL, '1397-02-25 14:31:56', NULL, '1397-02-25 14:33:59', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ریاست دفتر', 'اسنا بسیار قدیمی می باشد', NULL, 9),
-(35, 34, 'ث3', '1397-02-18', 3, 6, '02', 'H', '03', 'A', 3, 3, '02-H-03-A-03-03-D6', 3, NULL, '1397-02-31 09:47:40', NULL, 3, 14, 8, NULL, 8, 8, NULL, NULL, '1397-02-31 09:47:53', NULL, '1397-02-31 09:48:25', '1397-03-02 09:20:42', 8, 'سی', 1, NULL, NULL, '1397-03-02 09:20:51', '43', 'یس', NULL, 10),
-(36, 5, 'سیش', '1397-02-09', 3, 8, '01', 'A', '07', 'A', 5, 3, '01-A-07-A-05-03-D8', 3, NULL, '1397-02-31 11:13:22', NULL, 2, 14, 8, NULL, 8, 8, 8, '1397-03-02 09:09:51', '1397-02-31 11:13:28', NULL, '1397-03-01 08:55:57', '1397-03-02 09:01:09', 8, 'sasas', 1, NULL, NULL, '1397-03-02 09:01:32', 'sdsd', 'سشیشی', NULL, 11),
-(37, 34, 'یب', '1397-03-06', 33, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'تست', '1397-03-01 09:11:37', '1397-03-02 10:38:53', 2, 9, 8, 8, 8, NULL, NULL, NULL, NULL, '1397-03-02 10:38:35', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '44', 'یسب', NULL, 11),
-(38, 34, 'یب', '1397-03-06', 33, 2, '02', 'F', '02', 'A', 3, 5, '02-F-02-A-03-05-D2', 3, NULL, '1397-03-01 09:11:48', NULL, 2, 9, 8, NULL, 8, 8, NULL, NULL, '1397-03-01 09:13:20', NULL, '1397-03-02 11:33:52', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '44', 'یسب', NULL, 11),
-(39, 34, 'یب', '1397-03-06', 33, 9, '03', 'D', '01', 'A', 2, 2, '03-D-01-A-02-02-D9', 3, NULL, '1397-03-01 09:12:00', NULL, 2, 9, 8, NULL, 8, 8, 8, '1397-03-02 09:11:31', '1397-03-01 09:12:42', NULL, '1397-03-01 09:13:04', '1397-03-02 09:10:15', 8, 'dhg', 1, NULL, NULL, '1397-03-02 09:11:10', '44', 'یسب', NULL, 11),
-(40, 2, 'تست', '1397-03-01', 2, 3, '01', 'B', '12', 'A', 2, 4, '01-B-12-A-02-04-D3', 3, NULL, '1397-03-02 10:38:00', NULL, 3, 8, 8, NULL, 8, 8, NULL, NULL, '1397-03-02 10:38:16', NULL, '1397-03-02 10:40:03', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'تست', 'تست', NULL, 11);
+INSERT INTO `documents` (`id`, `number`, `subject`, `date`, `total_pages`, `edition`, `block`, `section`, `row`, `cabinet_side`, `cabinet_row`, `cabinet_column`, `label`, `status`, `remarks`, `created_at`, `updated_at`, `department_id`, `category_id`, `created_by`, `updated_by`, `approve_reject_auth`, `stocked_by`, `stock_updated_by`, `stock_updated_date`, `approved_at`, `rejected_at`, `stocked_date`, `receiver`, `description`, `countries`, `document_language_id`) VALUES
+(1, 4, 'تست', '1397-03-13', 3, 9, '01', 'D', '03', 'B', 2, 6, '01-D-03-B-02-06-D9', 3, 'تست', '1397-03-13 08:08:57', '1397-03-13 08:13:26', 1, 1, 8, 8, 8, 8, 8, '1397-03-13 08:30:35', '1397-03-13 08:13:58', '1397-03-13 08:10:34', '1397-03-13 08:17:42', '4', 'تست', NULL, 2);
 
 -- --------------------------------------------------------
 
@@ -163,14 +125,7 @@ CREATE TABLE `document_enquiry` (
 --
 
 INSERT INTO `document_enquiry` (`id`, `document_id`, `enquiry_id`) VALUES
-(1, 26, 1),
-(2, 26, 2),
-(3, 27, 2),
-(4, 28, 3),
-(6, 28, 4),
-(8, 28, 5),
-(9, 27, 6),
-(10, 31, 6);
+(1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -188,9 +143,8 @@ CREATE TABLE `document_language` (
 --
 
 INSERT INTO `document_language` (`id`, `language_name`) VALUES
-(9, 'پشتو'),
-(10, 'دری'),
-(11, 'انگلیسی');
+(1, 'پشتو'),
+(2, 'دری');
 
 -- --------------------------------------------------------
 
@@ -224,8 +178,7 @@ CREATE TABLE `enquiries` (
 --
 
 INSERT INTO `enquiries` (`id`, `enquiry_number`, `approval_authority`, `request_date`, `expected_return_date`, `return_date`, `returned`, `original`, `information`, `remarks`, `file_path`, `department_id`, `created_by`, `updated_by`, `received_by`, `created_at`, `updated_at`, `received_at`) VALUES
-(5, 1232, 'ریاست جمهوری', '1397-02-24', '1397-02-25', '1397-03-02', 1, 1, NULL, 'تست', 'uploads/enquiries/5.jpg', 3, 8, NULL, 8, '1397-02-24 14:10:28', NULL, '1397-03-02 11:24:30'),
-(6, 56, 'تست', '1397-03-01', NULL, NULL, 0, 0, NULL, NULL, 'uploads/enquiries/6.jpg', 3, 8, NULL, NULL, '1397-03-02 11:41:28', NULL, NULL);
+(1, 1, 'تست', '1397-03-07', '1397-03-17', '1397-03-14', 1, 1, NULL, 'تست', 'uploads/enquiries/1.jpg', 1, 8, NULL, 8, '1397-03-13 08:37:30', NULL, '1397-03-13 08:38:08');
 
 -- --------------------------------------------------------
 
@@ -242,6 +195,46 @@ CREATE TABLE `logs` (
   `date` varchar(20) COLLATE utf32_persian_ci NOT NULL,
   `time` varchar(10) COLLATE utf32_persian_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_persian_ci;
+
+--
+-- Dumping data for table `logs`
+--
+
+INSERT INTO `logs` (`id`, `table_name`, `table_id`, `activity`, `user_id`, `date`, `time`) VALUES
+(1, 'notices', 1, 'ایجاد اطلاعیه جدید', 8, '1397-03-09', '11:11:47'),
+(2, 'roles', 2, 'تصحیح نقش', 8, '1397-03-12', '08:30:30'),
+(3, 'roles', 2, 'تصحیح نقش', 8, '1397-03-12', '08:30:48'),
+(4, 'users', 2, 'دادن صلاحیت به نقش', 8, '1397-03-12', '08:33:02'),
+(5, 'users', 8, 'کاربر موفقانه غیر فعال گردید', 8, '1397-03-12', '09:08:05'),
+(6, 'users', 8, 'کاربر موفقانه غیر فعال گردید', 8, '1397-03-12', '09:08:11'),
+(7, 'users', 8, 'کاربر موفقانه غیر فعال گردید', 8, '1397-03-12', '09:08:29'),
+(8, 'users', 8, 'کاربر موفقانه غیر فعال گردید', 8, '1397-03-12', '09:08:33'),
+(9, 'users', 8, 'کاربر موفقانه غیر فعال گردید', 8, '1397-03-12', '09:10:31'),
+(10, 'users', 8, 'کاربر موفقانه غیر فعال گردید', 8, '1397-03-12', '09:11:03'),
+(11, 'users', 7, 'کاربر موفقانه فعال گردید', 8, '1397-03-12', '09:14:09'),
+(12, 'users', 7, 'کاربر موفقانه فعال گردید', 8, '1397-03-12', '09:14:27'),
+(13, 'users', 7, 'کاربر موفقانه فعال گردید', 8, '1397-03-12', '09:14:32'),
+(14, 'users', 6, 'کاربر موفقانه فعال گردید', 8, '1397-03-12', '09:15:14'),
+(15, 'users', 7, 'کاربر موفقانه فعال گردید', 8, '1397-03-12', '09:16:01'),
+(16, 'users', 7, 'کاربر موفقانه فعال گردید', 8, '1397-03-12', '09:16:07'),
+(17, 'users', 7, 'کاربر موفقانه فعال گردید', 8, '1397-03-12', '09:17:11'),
+(18, 'users', 7, 'کاربر موفقانه فعال گردید', 8, '1397-03-12', '09:17:35'),
+(19, 'users', 7, 'کاربر موفقانه فعال گردید', 8, '1397-03-12', '09:18:09'),
+(20, 'users', 6, 'کاربر موفقانه فعال گردید', 8, '1397-03-12', '09:18:18'),
+(21, 'users', 7, 'کاربر موفقانه غیر فعال گردید', 8, '1397-03-12', '09:18:31'),
+(22, 'users', 8, 'کاربر موفقانه غیر فعال گردید', 8, '1397-03-12', '09:18:35'),
+(23, 'departments', 1, 'ایجاد مرجع جدید', 8, '1397-03-13', '08:05:21'),
+(24, 'languages', 1, 'ایجاد لسان جدید', 8, '1397-03-13', '08:07:23'),
+(25, 'languages', 2, 'ایجاد لسان جدید', 8, '1397-03-13', '08:07:34'),
+(26, 'documents', 1, 'درج سند', 8, '1397-03-13', '08:08:57'),
+(27, 'documents', 1, 'رد سند', 8, '1397-03-13', '08:10:34'),
+(28, 'uploads', 1, 'حذف فایل سند', 8, '1397-03-13', '08:13:17'),
+(29, 'documents', 1, 'تصحیح سند درج شده', 8, '1397-03-13', '08:13:27'),
+(30, 'documents', 1, 'تایید سند', 8, '1397-03-13', '08:13:58'),
+(31, 'documents', 1, 'جابجایی سند', 8, '1397-03-13', '08:17:43'),
+(32, 'documents', 1, 'تصحیح جابجایی سند', 8, '1397-03-13', '08:30:35'),
+(33, 'enquiry', 1, 'درج درخواستی', 8, '1397-03-13', '08:37:31'),
+(34, 'enquiry', 1, 'بازگشت سند', 8, '1397-03-13', '08:38:08');
 
 -- --------------------------------------------------------
 
@@ -294,6 +287,7 @@ CREATE TABLE `model_has_roles` (
 --
 
 INSERT INTO `model_has_roles` (`role_id`, `model_id`, `model_type`) VALUES
+(2, 2, 'App\\User'),
 (2, 6, 'App\\User'),
 (2, 7, 'App\\User'),
 (2, 8, 'App\\User'),
@@ -308,40 +302,7 @@ INSERT INTO `model_has_roles` (`role_id`, `model_id`, `model_type`) VALUES
 (5, 8, 'App\\User'),
 (6, 1, 'App\\User'),
 (6, 7, 'App\\User'),
-(6, 8, 'App\\User'),
-(7, 2, 'App\\User'),
-(7, 6, 'App\\User'),
-(7, 8, 'App\\User'),
-(8, 7, 'App\\User'),
-(8, 8, 'App\\User'),
-(9, 7, 'App\\User'),
-(9, 8, 'App\\User'),
-(10, 7, 'App\\User'),
-(10, 8, 'App\\User'),
-(11, 7, 'App\\User'),
-(11, 8, 'App\\User'),
-(12, 7, 'App\\User'),
-(12, 8, 'App\\User'),
-(13, 7, 'App\\User'),
-(13, 8, 'App\\User'),
-(14, 7, 'App\\User'),
-(14, 8, 'App\\User'),
-(15, 7, 'App\\User'),
-(15, 8, 'App\\User'),
-(16, 7, 'App\\User'),
-(16, 8, 'App\\User'),
-(17, 7, 'App\\User'),
-(17, 8, 'App\\User'),
-(18, 7, 'App\\User'),
-(18, 8, 'App\\User'),
-(19, 7, 'App\\User'),
-(19, 8, 'App\\User'),
-(20, 7, 'App\\User'),
-(20, 8, 'App\\User'),
-(21, 7, 'App\\User'),
-(21, 8, 'App\\User'),
-(22, 7, 'App\\User'),
-(22, 8, 'App\\User');
+(6, 8, 'App\\User');
 
 -- --------------------------------------------------------
 
@@ -363,7 +324,7 @@ CREATE TABLE `notice` (
 --
 
 INSERT INTO `notice` (`id`, `title`, `description`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Cleaning up the Order related docs', 'tested with the system', 1, '2018-05-08 09:12:39', '2018-05-08 09:12:39');
+(1, 'Cleaning up the Order related docs', '<p>test</p>', 0, '2018-05-30 06:41:47', '2018-05-30 06:41:47');
 
 -- --------------------------------------------------------
 
@@ -387,21 +348,7 @@ CREATE TABLE `notifications` (
 --
 
 INSERT INTO `notifications` (`id`, `type`, `notifiable_id`, `notifiable_type`, `data`, `read_at`, `created_at`, `updated_at`) VALUES
-('0570bd0d-85c1-43f8-bb44-215afba54bdf', 'App\\Notifications\\RequestStatus', 8, 'App\\User', '{\"document_id\":35,\"status\":\"accepted\",\"notification\":\"\'\\u0633\\u06cc\' \\u067e\\u0630\\u06cc\\u0631\\u0641\\u062a\\u0647 \\u0634\\u062f!\'\",\"notification_type\":\"enquiry\",\"alert_type\":\"danger\"}', NULL, '2018-05-23 07:05:17', '2018-05-23 07:05:17'),
-('09516481-ea32-440c-b92d-b4ed3b6d068f', 'App\\Notifications\\DocumentRejected', 8, 'App\\User', '{\"document_id\":37,\"notification\":\"\\u062a\\u0633\\u062a\",\"rejected_by\":8,\"notification_type\":\"document\",\"alert_type\":\"danger\"}', NULL, '2018-05-23 06:08:37', '2018-05-23 06:08:37'),
-('33f100c7-93be-4b14-a574-5fde138f8e7d', 'App\\Notifications\\DocumentRejected', 8, 'App\\User', '{\"document_id\":28,\"notification\":\"something is wrong\",\"rejected_by\":8}', NULL, '2018-05-08 04:11:14', '2018-05-08 04:11:14'),
-('34031f4e-c72c-4011-acd4-a26f4c325d23', 'App\\Notifications\\RequestStatus', 8, 'App\\User', '{\"document_id\":31,\"status\":\"accepted\",\"notification\":\"\'asasa\' \\u067e\\u0630\\u06cc\\u0631\\u0641\\u062a\\u0647 \\u0634\\u062f!\'\",\"notification_type\":\"enquiry\",\"alert_type\":\"danger\"}', NULL, '2018-05-23 07:05:17', '2018-05-23 07:05:17'),
-('39dca623-d1da-4ed8-81a6-709984eb132b', 'App\\Notifications\\RequestStatus', 8, 'App\\User', '{\"document_id\":36,\"status\":\"accepted\",\"notification\":\"\'sasas\' \\u067e\\u0630\\u06cc\\u0631\\u0641\\u062a\\u0647 \\u0634\\u062f!\'\",\"notification_type\":\"enquiry\",\"alert_type\":\"danger\"}', NULL, '2018-05-23 07:05:17', '2018-05-23 07:05:17'),
-('4deca5ff-7204-47d5-abb5-67a3672db24d', 'App\\Notifications\\DocumentRejected', 8, 'App\\User', '{\"document_id\":26,\"notification\":\"\\u062a\\u0639\\u062f\\u0627\\u062f \\u0635\\u0641\\u062d\\u0627\\u062a \\u063a\\u0644\\u0637 \\u0627\\u0633\\u062a\",\"rejected_by\":8}', NULL, '2018-05-05 11:07:52', '2018-05-05 11:07:52'),
-('4fd53b54-31d7-41a7-b02a-b26f254f87fa', 'App\\Notifications\\RequestStatus', 8, 'App\\User', '{\"document_id\":30,\"status\":\"rejected\",\"notification\":\"\'for test\' \\u0631\\u062f \\u0634\\u062f!\'\",\"notification_type\":\"enquiry\",\"alert_type\":\"success\"}', NULL, '2018-05-23 07:05:18', '2018-05-23 07:05:18'),
-('5554c059-193d-4c8c-b9e0-45e9b7919b43', 'App\\Notifications\\DocumentRejected', 8, 'App\\User', '{\"document_id\":26,\"notification\":\"\\u0644\\u0633\\u0627\\u0646 \\u0633\\u0646\\u062f \\u063a\\u0644\\u0637 \\u0627\\u0633\\u062a\",\"rejected_by\":8}', NULL, '2018-05-05 10:49:29', '2018-05-05 10:49:29'),
-('5fcecbb5-747d-47dc-bfa8-7ec383bfddc9', 'App\\Notifications\\RequestStatus', 8, 'App\\User', '{\"request_document_id\":27,\"status\":\"accepted\",\"notification\":\"\'fgdg\' \\u067e\\u0630\\u06cc\\u0631\\u0641\\u062a\\u0647 \\u0634\\u062f!\'\"}', NULL, '2018-05-13 09:55:32', '2018-05-13 09:55:32'),
-('6383a80a-635b-4672-9266-870c864a70fc', 'App\\Notifications\\RequestStatus', 8, 'App\\User', '{\"document_id\":29,\"status\":\"rejected\",\"notification\":\"\'cabinet number is wrong\' \\u0631\\u062f \\u0634\\u062f!\'\",\"notification_type\":\"enquiry\",\"alert_type\":\"success\"}', NULL, '2018-05-23 07:05:18', '2018-05-23 07:05:18'),
-('857ba38f-7dc8-4aef-a8bc-aff8c33dea60', 'App\\Notifications\\DocumentRejected', 8, 'App\\User', '{\"document_id\":26,\"notification\":\"\\u062a\\u0627\\u0631\\u06cc\\u062e \\u0627\\u0634\\u062a\\u0628\\u0627\\u0647 \\u0627\\u0633\\u062a\",\"rejected_by\":8}', NULL, '2018-05-05 10:07:54', '2018-05-05 10:07:54'),
-('b1f3b51d-c5b4-4bd6-9553-948558a030bf', 'App\\Notifications\\DocumentRejected', 8, 'App\\User', '{\"document_id\":34,\"notification\":\"yu\",\"rejected_by\":8}', NULL, '2018-05-22 10:11:09', '2018-05-22 10:11:09'),
-('cd650b86-1af6-458e-95b9-3a58925c6d86', 'App\\Notifications\\RequestStatus', 8, 'App\\User', '{\"request_document_id\":26,\"status\":\"accepted\",\"notification\":\"\'\\u0634\\u0645\\u0627\\u0631\\u0647 \\u0627\\u0644\\u0645\\u0627\\u0631\\u06cc \\u063a\\u0644\\u0637 \\u0627\\u0633\\u062a\' \\u067e\\u0630\\u06cc\\u0631\\u0641\\u062a\\u0647 \\u0634\\u062f!\'\"}', NULL, '2018-05-05 11:47:35', '2018-05-05 11:47:35'),
-('dd38ecab-bb06-4467-9346-6610141c08f3', 'App\\Notifications\\RequestStatus', 8, 'App\\User', '{\"document_id\":39,\"status\":\"accepted\",\"notification\":\"\'dhg\' \\u067e\\u0630\\u06cc\\u0631\\u0641\\u062a\\u0647 \\u0634\\u062f!\'\",\"notification_type\":\"enquiry\",\"alert_type\":\"danger\"}', NULL, '2018-05-23 07:05:17', '2018-05-23 07:05:17'),
-('fc13f84e-3b32-4f56-9852-07d6e6151953', 'App\\Notifications\\RequestStatus', 8, 'App\\User', '{\"document_id\":27,\"status\":\"accepted\",\"notification\":\"\'sdf\' \\u067e\\u0630\\u06cc\\u0631\\u0641\\u062a\\u0647 \\u0634\\u062f!\'\",\"notification_type\":\"enquiry\",\"alert_type\":\"danger\"}', NULL, '2018-05-23 07:05:18', '2018-05-23 07:05:18');
+('cc9e5c02-3313-4859-8ad5-8f1d5cc5a8d3', 'App\\Notifications\\DocumentRejected', 8, 'App\\User', '{\"document_id\":1,\"notification\":\"\\u062a\\u0633\\u062a\",\"rejected_by\":8,\"notification_type\":\"document\",\"alert_type\":\"danger\"}', NULL, '2018-06-03 03:40:35', '2018-06-03 03:40:35');
 
 -- --------------------------------------------------------
 
@@ -450,7 +397,8 @@ INSERT INTO `permissions` (`id`, `name`, `translation`, `menu`, `guard_name`, `c
 (13, 'show_all_enquiries', 'نمایش همه درخواستی ها', 2, 'web', '2018-04-10 01:45:14', '2018-04-10 01:45:14'),
 (14, 'show_completed_documents', 'نمایش اسناد تکمیل شده', 1, 'web', '2018-04-10 02:36:21', '2018-04-10 02:36:21'),
 (15, 'undo_approval', 'لغو تاییدی', 1, 'web', '2018-04-10 06:41:44', '2018-04-10 06:41:44'),
-(16, 'add_order', NULL, NULL, 'web', '2018-04-21 23:59:07', '2018-04-22 00:12:20');
+(16, 'add_order', NULL, NULL, 'web', '2018-04-21 23:59:07', '2018-04-22 00:12:20'),
+(17, 'edit_enquiry', 'تصحیح درخواستی', 2, 'web', '2018-05-30 04:59:15', '2018-05-30 04:59:15');
 
 -- --------------------------------------------------------
 
@@ -476,23 +424,7 @@ INSERT INTO `roles` (`id`, `name`, `translation`, `guard_name`, `created_at`, `u
 (3, 'approval', 'کارمند تاییدی', 'web', '2018-04-09 00:36:12', '2018-04-09 00:36:12'),
 (4, 'stock', 'کارمند جابجایی سند', 'web', '2018-04-09 00:36:27', '2018-04-09 00:36:27'),
 (5, 'enquiry', 'کارمند درخواستی', 'web', '2018-04-09 00:37:16', '2018-04-09 00:37:16'),
-(6, 'admin', 'ادمین', 'web', '2018-04-09 00:37:49', '2018-04-09 00:37:49'),
-(7, 'order', NULL, 'web', '2018-04-21 23:44:57', '2018-04-21 23:54:54'),
-(8, 'faramin', 'فرامین', 'web', '2018-04-08 20:02:24', '2018-04-08 20:02:24'),
-(9, 'ahkam', 'احکام', 'web', '2018-04-09 20:02:24', '2018-04-09 20:02:24'),
-(10, 'hedayat_nama_ha', 'هدایت نامه ها', 'web', '2018-04-10 20:02:24', '2018-04-10 20:02:24'),
-(11, 'musawebat', 'مصوبات', 'web', '2018-04-11 20:02:24', '2018-04-11 20:02:24'),
-(12, 'qawanin', 'قوانین', 'web', '2018-04-12 20:02:24', '2018-04-12 20:02:24'),
-(13, 'tarzul_amal_ha', 'طرزالعمل ها', 'web', '2018-04-13 20:02:24', '2018-04-13 20:02:24'),
-(14, 'muqarara_ha', 'مقرره ها', 'web', '2018-04-14 20:02:24', '2018-04-14 20:02:24'),
-(15, 'asas_nama_ha', 'اساس نامه ها', 'web', '2018-04-15 20:02:24', '2018-04-15 20:02:24'),
-(16, 'muahedat', 'معاهدات', 'web', '2018-04-16 20:02:24', '2018-04-16 20:02:24'),
-(17, 'tafahum_nama_wa_yadasht_tafahum_nama_ha', 'تفاهم نامه و یاداشت تفاهم نامه ها', 'web', '2018-04-17 20:02:24', '2018-04-17 20:02:24'),
-(18, 'protocol_ha', 'پرتوکول ها', 'web', '2018-04-18 20:02:24', '2018-04-18 20:02:24'),
-(19, 'misaq_ha', 'میثاق ها', 'web', '2018-04-19 20:02:24', '2018-04-19 20:02:24'),
-(20, 'makatib', 'مکاتب', 'web', '2018-04-20 20:02:24', '2018-04-20 20:02:24'),
-(21, 'kutub_e_shahi', 'کتب شاهی', 'web', '2018-04-21 20:02:24', '2018-04-21 20:02:24'),
-(22, 'asnad_e_melkiat_ha', 'اسناد ملکیت ها', 'web', '2018-04-22 20:02:24', '2018-04-22 20:02:24');
+(6, 'admin', 'ادمین', 'web', '2018-04-09 00:37:49', '2018-04-09 00:37:49');
 
 -- --------------------------------------------------------
 
@@ -510,115 +442,31 @@ CREATE TABLE `role_has_permissions` (
 --
 
 INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
+(2, 2),
 (2, 6),
-(2, 8),
-(2, 9),
-(2, 10),
-(2, 11),
-(2, 12),
-(2, 13),
-(2, 14),
-(2, 15),
-(2, 16),
-(2, 17),
-(2, 18),
-(2, 19),
-(2, 20),
-(2, 21),
-(2, 22),
 (3, 3),
 (3, 6),
 (4, 4),
 (4, 6),
 (5, 5),
 (5, 6),
+(6, 2),
 (6, 6),
-(6, 8),
-(6, 9),
-(6, 10),
-(6, 11),
-(6, 12),
-(6, 13),
-(6, 14),
-(6, 15),
-(6, 16),
-(6, 17),
-(6, 18),
-(6, 19),
-(6, 20),
-(6, 21),
-(6, 22),
-(7, 8),
-(7, 9),
-(7, 10),
-(7, 11),
-(7, 12),
-(7, 13),
-(7, 14),
-(7, 15),
-(7, 16),
-(7, 17),
-(7, 18),
-(7, 19),
-(7, 20),
-(7, 21),
-(7, 22),
+(7, 2),
 (8, 3),
 (8, 6),
-(8, 8),
-(8, 9),
-(8, 10),
-(8, 11),
-(8, 12),
-(8, 13),
-(8, 14),
-(8, 15),
-(8, 16),
-(8, 17),
-(8, 18),
-(8, 19),
-(8, 20),
-(8, 21),
-(8, 22),
+(9, 2),
 (9, 3),
 (9, 6),
-(9, 8),
-(9, 9),
-(9, 10),
-(9, 11),
-(9, 12),
-(9, 13),
-(9, 14),
-(9, 15),
-(9, 16),
-(9, 17),
-(9, 18),
-(9, 19),
-(9, 20),
-(9, 21),
-(9, 22),
-(10, 8),
-(10, 9),
-(10, 10),
-(10, 11),
-(10, 12),
-(10, 13),
-(10, 14),
-(10, 15),
-(10, 16),
-(10, 17),
-(10, 18),
-(10, 19),
-(10, 20),
-(10, 21),
-(10, 22),
+(10, 2),
 (11, 5),
 (12, 5),
 (13, 5),
 (13, 6),
 (14, 4),
 (14, 6),
-(15, 3);
+(15, 3),
+(17, 5);
 
 -- --------------------------------------------------------
 
@@ -637,17 +485,7 @@ CREATE TABLE `uploads` (
 --
 
 INSERT INTO `uploads` (`id`, `document_id`, `file_path`) VALUES
-(58, 26, 'uploads/8/26_1.jpg'),
-(59, 28, 'uploads/9/28_1.jpg'),
-(60, 28, 'uploads/9/28_2.jpg'),
-(61, 28, 'uploads/9/28_3.jpg'),
-(62, 29, 'uploads/12/29_1.jpg'),
-(63, 30, 'uploads/11/30_1.jpg'),
-(64, 31, 'uploads/10/31_1.jpg'),
-(65, 32, 'uploads/9/32_1.jpg'),
-(66, 34, 'uploads/12/34_1.jpg'),
-(67, 36, 'uploads/7/36_1.jpg'),
-(68, 40, 'uploads/8/40_1.jpg');
+(2, 1, 'uploads/1/1_1.jpg');
 
 -- --------------------------------------------------------
 
@@ -662,22 +500,23 @@ CREATE TABLE `users` (
   `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `type` enum('0','1') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1' COMMENT '0->disable,1->active'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'test@test.com', 'test@test.com', '$2y$10$rUcfiECyfAO1lvbcUWpbQerekHr64or2wWqAPx6XibFDkh5A49Z96', 'Gf8KJhtNLWadPqKD03TNSg94z9TKbFOkw1uFcb7W0tNoC6xAc6E0H80ptngu', '2018-03-03 05:50:30', '2018-05-07 06:56:33'),
-(2, 'entry', 'entry@test.com', '$2y$10$LHOI3d8/d.H3xZI5M8L3VOYrr1I8MPrQ7KEPpU/Up3rFoY/YCxETq', 'jYWmP0pT08ewXU44jiOa4uCr6ewmquzJGyvRbUm4xO0qsydW4JlnzsXjkgbx', '2018-04-09 00:43:06', '2018-04-24 23:40:49'),
-(3, 'approve', 'approve@test.com', '$2y$10$p4HofoqvgThS5UYqDoXz8urQgbIcxbKitUf4UGYAlwcDd.GzDA2bK', 'xcnzayAU5vf121EYlqBSVTgd73oMCqbFBsHYI9gwECcmPPlbN1C9VABiIzeB', '2018-04-09 01:19:29', '2018-05-07 07:18:46'),
-(4, 'stock', 'stock@test.com', '$2y$10$aUZrDkUgPKjPbbzEPvcKTOChHzse7D5bMmpwwDDdjmdPBKpNG8wFO', 'W3tOPcCGisBkbYRzKPL2IZcl1Q5TOZDh6j5OJx7PObEECr0Jj7M3kLAwjfhN', '2018-04-09 01:25:39', '2018-04-09 01:25:39'),
-(5, 'enquiry', 'enquiry@test.com', '$2y$10$hKFErRtQJ8xCRSbvEnOdKOyWaBY7wMwCtSrMLSLiyGdcbCUKZCSve', 'uhkqPVYQfkKASjmkIV82gWpuuwaA8gRKLcArysKe0MFF5bO03xggc2R7PVKu', '2018-04-10 01:41:09', '2018-04-10 01:41:09'),
-(6, 'farman', 'farman@test.com', '$2y$10$hsqbYIxXJkzxOU8CHJROLuLUvhkwk7glUSKmLc9Y9.EF2UuOJcDiC', 'of28oWT74DqFhLdI5tN0hUHdyyebtRLpPLgsITiZmTAjex8mFbbQVs6OZNsQ', '2018-04-21 23:49:29', '2018-04-30 05:34:48'),
-(7, 'root', 'root@test.com', '$2y$10$Olal8yTG2e8gc8v7eo3QLuPUufTe3vLs4BJj0QIgZhOMqJrrmzMbq', NULL, '2018-05-05 05:31:50', '2018-05-05 05:48:31'),
-(8, 'admin_user', 'admin_user@test.com', '$2y$10$IS5BmAP7SHxHazo/Q6DyveLXpyZdobkXbHNwq0ig9Zecfsq8LbfSG', 'lOzUzqKxDFT98KHZDeNcXYjLgkRVuljYaMemo6inEr2iQx1Wug4pCJiEAGLA', '2018-05-05 05:53:46', '2018-05-05 07:27:47');
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`, `type`) VALUES
+(1, 'test@test.com', 'test@test.com', '$2y$10$rUcfiECyfAO1lvbcUWpbQerekHr64or2wWqAPx6XibFDkh5A49Z96', 'Gf8KJhtNLWadPqKD03TNSg94z9TKbFOkw1uFcb7W0tNoC6xAc6E0H80ptngu', '2018-03-03 05:50:30', '2018-05-07 06:56:33', ''),
+(2, 'entry', 'entry@test.com', '$2y$10$LHOI3d8/d.H3xZI5M8L3VOYrr1I8MPrQ7KEPpU/Up3rFoY/YCxETq', 'jYWmP0pT08ewXU44jiOa4uCr6ewmquzJGyvRbUm4xO0qsydW4JlnzsXjkgbx', '2018-04-09 00:43:06', '2018-04-24 23:40:49', '1'),
+(3, 'approve', 'approve@test.com', '$2y$10$p4HofoqvgThS5UYqDoXz8urQgbIcxbKitUf4UGYAlwcDd.GzDA2bK', 'xcnzayAU5vf121EYlqBSVTgd73oMCqbFBsHYI9gwECcmPPlbN1C9VABiIzeB', '2018-04-09 01:19:29', '2018-05-07 07:18:46', ''),
+(4, 'stock', 'stock@test.com', '$2y$10$aUZrDkUgPKjPbbzEPvcKTOChHzse7D5bMmpwwDDdjmdPBKpNG8wFO', 'W3tOPcCGisBkbYRzKPL2IZcl1Q5TOZDh6j5OJx7PObEECr0Jj7M3kLAwjfhN', '2018-04-09 01:25:39', '2018-04-09 01:25:39', ''),
+(5, 'enquiry', 'enquiry@test.com', '$2y$10$hKFErRtQJ8xCRSbvEnOdKOyWaBY7wMwCtSrMLSLiyGdcbCUKZCSve', 'uhkqPVYQfkKASjmkIV82gWpuuwaA8gRKLcArysKe0MFF5bO03xggc2R7PVKu', '2018-04-10 01:41:09', '2018-04-10 01:41:09', ''),
+(6, 'farman', 'farman@test.com', '$2y$10$hsqbYIxXJkzxOU8CHJROLuLUvhkwk7glUSKmLc9Y9.EF2UuOJcDiC', 'of28oWT74DqFhLdI5tN0hUHdyyebtRLpPLgsITiZmTAjex8mFbbQVs6OZNsQ', '2018-04-21 23:49:29', '2018-06-02 04:48:18', '1'),
+(7, 'root', 'root@test.com', '$2y$10$Olal8yTG2e8gc8v7eo3QLuPUufTe3vLs4BJj0QIgZhOMqJrrmzMbq', NULL, '2018-05-05 05:31:50', '2018-06-02 04:48:31', '0'),
+(8, 'admin_user', 'admin_user@test.com', '$2y$10$m5yjCa7lYROw94Hm4.6.Ju1/TAUq5RqBfdo.y2NLpQY81jqcIiwzS', 'CsEfQnrNtXpDwOlHkEfwLtHiE459svzLbRWUfObu7wv39QHn3ZMLgJFbNwfK', '2018-05-05 05:53:46', '2018-06-02 04:48:35', '1');
 
 --
 -- Indexes for dumped tables
@@ -804,43 +643,43 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `departments`
 --
 ALTER TABLE `departments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `documents`
 --
 ALTER TABLE `documents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `document_enquiry`
 --
 ALTER TABLE `document_enquiry`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `document_language`
 --
 ALTER TABLE `document_language`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `enquiries`
 --
 ALTER TABLE `enquiries`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -858,19 +697,19 @@ ALTER TABLE `notice`
 -- AUTO_INCREMENT for table `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `uploads`
 --
 ALTER TABLE `uploads`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `users`
