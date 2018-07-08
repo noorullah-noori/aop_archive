@@ -133,6 +133,8 @@ Route::group(['middleware' => ['role:stock']], function () {
 
   Route::get('get_folder_count','DocumentController@getFolderCount')->name('get_folder_count');
 
+  Route::get('get_available_folders','DocumentController@getAvailableFolders')->name('get_available_folders');
+
   Route::get('folder_view','DocumentController@folderView')->name('folder_view');
 
   Route::post('get_folders','DocumentController@getFolders')->name('get_folders');

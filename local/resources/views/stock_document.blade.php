@@ -197,18 +197,12 @@
                   <div class="form-group">
                     <label class="control-label col-md-3">فولدر</label>
                      <div class="col-md-9">
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <select name="folder" id="folder" class="form-control">
                         <option value="">فولدر</option>
-                        <option value="01">01</option>
-                        <option value="02">02</option>
-                        <option value="03">03</option>
-                        <option value="04">04</option>
-                        <option value="05">05</option>
-                        <option value="06">06</option>
                       </select>
                       </div>
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <input type="text" name="folder_count" class="form-control" id="folder_count">
                       </div>
                         {{-- <input type="number" name="block" value="{{old('block')}}" placeholder="بلاک" class="form-control"> --}}
@@ -295,6 +289,33 @@
         }
     });
     });
+
+    $("#row").change(function(){
+
+    var data = {};
+
+    data['year'] = $("#cabinet_year").val();
+    data['number'] = $("#cabinet_number").val();
+    data['row'] = $("#row").val();
+    data['category_id'] = $("#categories_id").val();
+
+    $.ajax({
+      type: "GET",
+      data:data,
+      url: "{{url('get_available_folders/')}}",
+      success: function(result) {
+        $("#folder").empty();
+        $.each(result, function(index ,val){
+          $("#folder").append(
+            $('<option></option>').val(val.folder).html("<i class='icon-folder-alt'> فولدر  "+val.folder+"</i>   ---- "+val.folder_count+"فایل ")
+          );
+        })
+      },
+      error: function(result) {
+          alert('error');
+      }
+    });
+});
 
   </script>
 
