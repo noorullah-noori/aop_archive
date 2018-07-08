@@ -721,7 +721,7 @@ class DocumentController extends Controller
 
           // code for requesting stock edit
           if(Auth::user()->hasrole('stock')){
-              $res .= '<a href="'.route('edit_stock',$row['id']).'" class="btn" data-toggle="tooltip" data-placement="top" title="تصحیح جابجایی اسند"  style="padding:0;"><i style="font-size:1.3em !important;" class="icon-note"></i></a>';
+              //$res .= '<a href="'.route('edit_stock',$row['id']).'" class="btn" data-toggle="tooltip" data-placement="top" title="تصحیح جابجایی اسند"  style="padding:0;"><i style="font-size:1.3em !important;" class="icon-note"></i></a>';
             // }
 
           }

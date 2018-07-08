@@ -105,6 +105,7 @@
             @if($document->status==3)
             <hr>
             <h3 class="form-section">موقعیت فزیکی سند</h3>
+            <!--
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -115,6 +116,7 @@
                             </p>
                         </div>
                     </div>
+
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
@@ -127,14 +129,15 @@
                     </div>
                 </div>
             </div>
+          -->
             <div class="row">
 
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label col-md-3">الماری:</label>
+                        <label class="control-label col-md-3">سال:</label>
                         <div class="col-md-9">
                             <p class="form-control-static">
-                                 {{$document->row}}
+                                 {{$document->cabinet_year}}
                             </p>
                         </div>
                     </div>
@@ -142,10 +145,10 @@
                 <!--/span-->
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label col-md-3">طرف الماری:</label>
+                        <label class="control-label col-md-3">الماری:</label>
                         <div class="col-md-9">
                             <p class="form-control-static">
-                                 {{$document->cabinet_side}}
+                                 {{$document->cabinet_number}}
                             </p>
                         </div>
                     </div>
@@ -153,23 +156,24 @@
             </div>
             <!--/row-->
             <div class="row">
+                
+                <!--/span-->
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label col-md-3">روک:</label>
                         <div class="col-md-9">
                             <p class="form-control-static">
-                                 {{$document->cabinet_row}}
+                                 {{$document->row}}
                             </p>
                         </div>
                     </div>
                 </div>
-                <!--/span-->
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label col-md-3">شماره دوسیه:</label>
+                        <label class="control-label col-md-3">فولدر:</label>
                         <div class="col-md-9">
                             <p class="form-control-static">
-                                 {{$document->cabinet_column}}
+                                 {{$document->folder}}
                             </p>
                         </div>
                     </div>
@@ -179,21 +183,10 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label col-md-3">تعداد جلد:</label>
+                        <label class="control-label col-md-3">شماره سند:</label>
                         <div class="col-md-9">
                             <p class="form-control-static">
-                                 {{$document->edition}}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label col-md-3">لیبل:</label>
-                        <div class="col-md-9">
-                            <p class="form-control-static">
-                                 {{$document->label}}
+                                 {{$document->folder_count}}
                             </p>
                         </div>
                     </div>
