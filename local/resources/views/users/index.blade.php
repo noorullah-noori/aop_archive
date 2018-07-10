@@ -6,7 +6,7 @@
 @section('content')
 
   <div class="portlet light">
-  	<div class="portlet-title">
+    <div class="portlet-title">
       <div class="caption">
           <i class="icon-user font-green-sharp"></i>
           <span class="caption-subject font-green-sharp bold uppercase">@yield('title')</span>
@@ -41,7 +41,7 @@
                 <tbody>
                     @foreach ($users as $user)
                     <tr>
-                      @php 
+                      @php
                        if($user['type']==1){
                             $checked ='checked';
                           }else{
@@ -53,7 +53,7 @@
                         <td>{{ $user->email }}</td>
                         {{-- <td>{{ $user->created_at->format('F d, Y h:ia') }}</td> --}}
                         <td>{{  $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
-                        <td><input type='checkbox' name='type' {{$checked}} value="{{$user['id']}}"></td>
+                        <td><input type='checkbox' name='type' {{$checked}} id="{{$user['id']}}"></td>
                         <td>
                           {{-- Edit user personal Details --}}
                           <a href="{{ route('users.edit', $user->id) }}" title="تحصیح کاربر" class="" style="margin-right: 3px;padding:10px;">
@@ -78,16 +78,15 @@
 
 @push('custom-js')
   <script>
-    $("input[name='type']").change(function(){
-      var type = '';
-      var user = '';
-      if(this.checked){
-          type=1;
-          user = $(this).val();
-      }
-      else{
+        $("[name='type']").bootstrapSwitch({size: "small", onColor:"success", offColor:"danger", onText: " فعال",offText: "غیرفعال"});
+    // $("input[name='type']").change(function(){
+        $("input[name='type']").on('switchChange.bootstrapSwitch', function(event, type) {
+
+      var user = $(this).attr('id');
+      if(type==true){
+        type=1;
+      }else{
         type=0;
-        user = $(this).val();
       }
       $.ajax({
       type : "get",
@@ -99,4 +98,13 @@
     });
     });
   </script>
+@endpush
+@push('custom-css')
+  <style media="screen">
+  .checker {
+    display: none !important;
+  }
+  </style>
+
+
 @endpush
