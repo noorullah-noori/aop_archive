@@ -77,7 +77,13 @@ class DocumentController extends Controller
           'language_id'=>'required',
           // 'selected_files'=>'required'
         ]);
-        // print_r($request->file());exit;
+      
+        
+
+        // $unique = Document::where('number',$request->document_number)->where('date',$request->document_date)->where('category_id',$request->document_categories)->first();
+        // if($unique!=''){
+        //   return redirect()->back()->withErrors(['msg', 'Not unique']);;
+        // }
 
         // create document object and store necessary information
 
@@ -551,6 +557,42 @@ class DocumentController extends Controller
       }
       return $folder_count;
     }
+
+    public function getAvailableFolders(Request $request){
+        $year = $request->year;
+        $number = $request->number;
+        $row = $request->row;
+        $category_id = $request->category_id;
+        
+        $final = '';
+        $last_folder = Document::where('cabinet_year',$year)->where('cabinet_number',$number)->where('row',$row)->select('folder')->orderBy('id','desc')->first();
+        $folder_value = '';
+        if($last_folder!=''){
+            $folder_value = $last_folder->folder+1;
+        }
+        else{
+            $folder_value = 1;
+        }
+
+        $folders = Document::where('cabinet_year',$year)->where('cabinet_number',$number)->where('row',$row)->where('category_id',$category_id)->select('folder','folder_count')->orderBy('id','desc')->get();
+        
+        if(sizeof($folders)==0){
+            $final = [array(
+                'folder' => $folder_value,
+                'folder_count' => 0,
+            )];
+        }
+        else{
+            $final  =$folders->toArray();
+            $final[sizeof($final)+1] = array(
+                'folder'=>$folder_value,
+                'folder_count'=>0,
+            );
+            
+        }
+        
+        return $final;
+      }
 
 
     public function folderView(){
