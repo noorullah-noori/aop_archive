@@ -1,4 +1,3 @@
-{{-- \resources\views\users\index.blade.php --}}
 @extends('layouts.master')
 
 @section('title', 'کاربران')
@@ -80,7 +79,7 @@
   <script>
         $("[name='type']").bootstrapSwitch({size: "small", onColor:"success", offColor:"danger", onText: " فعال",offText: "غیرفعال"});
     // $("input[name='type']").change(function(){
-        $("input[name='type']").on('switchChange.bootstrapSwitch', function(event, type) {
+      	$("input[name='type']").on('switchChange.bootstrapSwitch', function(event, type) {
 
       var user = $(this).attr('id');
       if(type==true){
