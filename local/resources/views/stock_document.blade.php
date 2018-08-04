@@ -155,23 +155,20 @@
                   <div class="form-group">
                     <label class="control-label col-md-3">سال</label>
                     <div class="col-md-9">
-                      <select name="cabinet_year" id="cabinet_year" class="form-control">
-                        <option value="">سال</option>
-                        <option value="1380">1380</option>
-                        <option value="1381">1381</option>
-                        <option value="1382">1382</option>
-                      </select>
-                        {{-- <input type="number" name="block" value="{{old('block')}}" placeholder="بلاک" class="form-control"> --}}
-                    </div>
-                  </div>
-                </div>
+                      <div class="col-md-4">
+                        <select name="cabinet_year" id="cabinet_year" class="form-control select2">
+                          <option value="">سال</option>
+                          <?php
+                             for ($year = 1380; $year <= 1410; $year++){
+                               echo"<option value='".$year."'>$year</option>";
+                             };
 
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="control-label col-md-3">الماری</label>
-                    <div class="col-md-9">
-                      <select name="cabinet_number" id="cabinet_number" class="form-control">
-                        <option value="">الماری</option>
+                             ?>
+                        </select>
+                      </div>
+                      <div class="col-md-4">
+                        <select name="cabinet_number" id="cabinet_number" class="form-control">
+                        <option value="">شماره</option>
                         <option value="01">01</option>
                         <option value="02">02</option>
                         <option value="03">03</option>
@@ -287,11 +284,11 @@
 @push('custom-js')
   <script>
 
-  
+
     // $("#folder").change(function(){
 
     //   var data = {};
-      
+
     //   data['year'] = $("#cabinet_year").val();
     //   data['number'] = $("#cabinet_number").val();
     //   data['row'] = $("#row").val();

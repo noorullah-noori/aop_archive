@@ -104,6 +104,7 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'unique_document' => 'test',
     ],
 
     /*
@@ -148,7 +149,8 @@ return [
       'cabinet_column'=>'بلاک',
       'edition'=>'جلد',
       'notice_title'=>'عنوان',
-      'notice_description'=>'توضیحات'
+      'notice_description'=>'توضیحات',
+      'unique_document' =>"test"
     ],
 
 ];

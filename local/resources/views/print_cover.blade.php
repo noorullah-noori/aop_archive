@@ -16,7 +16,7 @@
 </head>
 
 <body dir="rtl">
-    <img src="{{asset('assets/images/print_logo.png')}}" alt="logo" height="300px" width="800px" class="logo-default">
+    <img src="{{asset('assets/images/print_logo1.png')}}" alt="logo" height="400px" width="800px" class="logo-default">
 
     <table style=" width:800px;">
 
