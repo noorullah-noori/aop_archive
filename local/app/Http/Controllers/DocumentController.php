@@ -14,6 +14,7 @@ use App\Enquiry;
 use App\User;
 use App\Log;
 use Session;
+
 // use Image;
 use Intervention\Image\Facades\Image;
 use File;
@@ -25,6 +26,9 @@ use App\DataTables\DocumentsDataTable;
 use App\Notifications\DocumentRejected;
 use App\Notifications\RequestStatus;
 use App\Notifications\RequestStockEdit;
+use App\Rules\UniqueDocument;
+use Validator;
+
 
 
 class DocumentController extends Controller
@@ -67,23 +71,30 @@ class DocumentController extends Controller
     {
 
         // Validate Request
-        $this->validate($request,[
-          'document_number'=>'required|numeric',
+        $validator = Validator::make($request->all(), [
+          'document_number'=>"required",
           'document_date'=>'required',
           'document_subject'=>'required',
           'document_page_count'=>'required|numeric',
-          // 'document_categories'=>'required',
           'document_department'=>'required',
           'language_id'=>'required',
-          // 'selected_files'=>'required'
         ]);
-      
-        
 
-        // $unique = Document::where('number',$request->document_number)->where('date',$request->document_date)->where('category_id',$request->document_categories)->first();
-        // if($unique!=''){
-        //   return redirect()->back()->withErrors(['msg', 'Not unique']);;
-        // }
+        $validator->after(function($validator) use($request)
+        {
+            $already_exists = Document::where('number',$request->document_number)->where('date',$request->document_date)->where('category_id',$request->document_categories)->exists();
+            if($already_exists) {
+                $validator->errors()->add('aleady_exists', 'سند موجود است');
+            }
+        });
+
+        if ($validator->fails())
+        {
+            return redirect()->back()
+                             ->withErrors($validator)
+                             ->withInput();
+        }
+
 
         // create document object and store necessary information
 
@@ -563,7 +574,7 @@ class DocumentController extends Controller
         $number = $request->number;
         $row = $request->row;
         $category_id = $request->category_id;
-        
+
         $final = '';
         $last_folder = Document::where('cabinet_year',$year)->where('cabinet_number',$number)->where('row',$row)->select('folder')->orderBy('id','desc')->first();
         $folder_value = '';
@@ -575,7 +586,7 @@ class DocumentController extends Controller
         }
 
         $folders = Document::where('cabinet_year',$year)->where('cabinet_number',$number)->where('row',$row)->where('category_id',$category_id)->select('folder','folder_count')->orderBy('id','desc')->get();
-        
+
         if(sizeof($folders)==0){
             $final = [array(
                 'folder' => $folder_value,
@@ -588,9 +599,9 @@ class DocumentController extends Controller
                 'folder'=>$folder_value,
                 'folder_count'=>0,
             );
-            
+
         }
-        
+
         return $final;
       }
 
@@ -605,9 +616,9 @@ class DocumentController extends Controller
         $row = $request->row;
 
         $folders = Document::where('cabinet_year',$year)->where('cabinet_number',$number)->where('row',$row)->groupBy('category_id')->selectRaw("MIN(folder_count) AS folder_to, MAX(folder_count) AS folder_from,folder,category_id")->get();
-        
+
         // $alert= '';
-      
+
         // $alert = 'نمایش اسناد '.$data['alert'].' به تاریخ ""';
 
         // $documents->put('alert', $alert);
@@ -620,12 +631,12 @@ class DocumentController extends Controller
 
 
     public function getFolderData($id){
-        
+
         $folder_data = Document::findOrFail($id);
         $type = $folder_data->category->name;
-        
-        
-        
+
+
+
     }
 
     /**
@@ -646,7 +657,7 @@ class DocumentController extends Controller
         ]);
 
         $print_check=$request->checkbox;
-        
+
         // generating lable for document
         $label = $request->cabinet_year.'-'.$request->cabinet_number.'-'.$request->row.'-'.$request->folder.'-'.$request->folder_count;
 
@@ -1069,7 +1080,7 @@ class DocumentController extends Controller
 
     // }
 
-    
+
     // print lable
     public function printLabel($id){
 

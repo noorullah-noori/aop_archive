@@ -50,7 +50,7 @@
       @endhasanyrole
 
       @hasrole('entry')
-        <li class="{{(Request::is('saved_documents') || Request::is('documents')|| Request::is('approved_documents') || Request::is('rejected_documents') || Request::is('show_completed_documents')|| Request::is('show_enquiries_edit_status')) ?'active':''}}">
+        <li class="{{(Request::is('saved_documents') || Request::is('documents')|| Request::is('approved_documents') || Request::is('rejected_documents') || Request::is('show_completed_documents')|| Request::is('show_enquiries_edit_status')|| Request::is('folder_view')) ?'active':''}}">
           <a href="javascript:;">
           <i class="icon-eye"></i>
           <span class="title">نمایش اسناد</span>
@@ -112,7 +112,7 @@
           <span class="title">درخواستی اسناد</span>
           <span class="arrow "></span>
           </a>
-          <ul class="sub-menu" style="{{ Request::is('show_all_enquiries') || Request::is('show_enquiries')||Request::is('show_all_enquiries') ?'display:block;':''}}">
+          <ul class="sub-menu" style="{{ Request::is('show_all_enquiries') || Request::is('show_enquiries')?'display:block;':''}}">
 
             @can ('issue_enquiry')
               <li class="{{Request::is('enquiries') ?'active':''}}">
@@ -123,7 +123,7 @@
             @endcan
 
             @can ('edit_enquiry')
-              <li class="{{Request::is('enquiries') ?'active':''}}">
+              <li class="{{Request::is('edit_enquiries') ?'active':''}}">
                 <a href="{{route('edit_enquiries')}}">
                   <i class="icon-share-alt"></i>
                   تصحیح درخواستی ها</a>

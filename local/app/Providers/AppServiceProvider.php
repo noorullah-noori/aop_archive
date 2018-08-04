@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Validator;
+use App\Document;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,6 +17,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
       Schema::defaultStringLength(191);
+
+      Validator::extend('unique_document', function($attribute, $value, $parameters, $validator) {
+        $document=Document::where('number', $parameters[0])->where('date',$parameters[1])->where('category_id',$parameters[2])->exists();
+        return $document;
+      });
     }
 
     /**
