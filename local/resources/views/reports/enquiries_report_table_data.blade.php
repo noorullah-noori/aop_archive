@@ -61,6 +61,7 @@
           <td>{{$enquiry->department->name}}</td>
           <td>{{afghaniDateFormat($enquiry->request_date)}}</td>
           <td>{{afghaniDateFormat($enquiry->expected_return_date)}}</td>
+          @if($enquiry->returned==0)
           @if (($remaining_days = documentDeadlineDaysRemanining($enquiry->expected_return_date,2,'days')) < 3)
             <td style="direction:ltr;text-align:right;">
               <div style='padding:5px;' class='badge badge-danger'>{!! Verta::persianNumbers($remaining_days) !!}</div>
@@ -71,6 +72,10 @@
             </td>
 
           @endif
+          @else
+            <td></td> 
+          @endif
+
           <td>{{$enquiry->original == 0 ? 'کاپی' : 'اصلی'}}</td>
           <td>{!!$enquiry->returned == 1 ? '<i style="font-size:1.3em;color:green;" class="icon-check">' : '' !!}</td>
         </tr>

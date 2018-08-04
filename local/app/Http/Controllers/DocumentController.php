@@ -50,17 +50,7 @@ class DocumentController extends Controller
      */
     public function create()
     {
-        // $categories = Category::all();
-        $roles = Auth::user()->getRoleNames();
-        $rolesArray = $roles->toArray();
-        $categories = new Collection();
-        foreach($rolesArray as $key =>$value){
-          $temp = Category::where('name_en',$value)->first();
-          if($temp!=null) {
-            $categories->push($temp);
-          }
-        }
-        // return $categories;
+        $categories = Category::all();
 
         $departments = Department::orderBy('id','desc')->get();
         $document_language = DocumentLanguage::orderBy('id','desc')->get();
@@ -87,7 +77,13 @@ class DocumentController extends Controller
           'language_id'=>'required',
           // 'selected_files'=>'required'
         ]);
-        // print_r($request->file());exit;
+      
+        
+
+        // $unique = Document::where('number',$request->document_number)->where('date',$request->document_date)->where('category_id',$request->document_categories)->first();
+        // if($unique!=''){
+        //   return redirect()->back()->withErrors(['msg', 'Not unique']);;
+        // }
 
         // create document object and store necessary information
 
@@ -177,13 +173,15 @@ class DocumentController extends Controller
     public function edit($id)
     {
         $document = Document::find($id);
+        $categories = Category::all();
         // select document types which are given permission to the user
-        $roles = Auth::user()->getRoleNames();
-        $rolesArray = $roles->toArray();
-        $categories = new Collection();
-        foreach($rolesArray as $key =>$value){
-          $categories->push(Category::where('name_en',$value)->first());
-        }
+        // $roles = Auth::user()->getRoleNames();
+        // $rolesArray = $roles->toArray();
+        // $categories = new Collection();
+        // foreach($rolesArray as $key =>$value){
+        //   $categories->push(Category::where('name_en',$value)->first());
+        // }
+
         $document_language = DocumentLanguage::orderBy('id','desc')->get();
         $departments = Department::orderBy('id','desc')->get();
         return view('edit_document')->with(['document'=>$document,'categories'=>$categories,'departments'=>$departments,'document_language'=>$document_language]);
@@ -492,16 +490,7 @@ class DocumentController extends Controller
     public function editRejectedDocument($id){
         // retreive rejected document model record
         $document = Document::findOrFail($id);
-        // select document types whic has privilliges
-        $roles = Auth::user()->getRoleNames();
-        $rolesArray = $roles;
-        $categories = new Collection();
-
-        // return $test;
-        foreach($rolesArray as $key =>$value){
-          $categories->push(Category::where('name_en',$value)->first());
-        }
-        // return $document->category->id;
+        $categories = Category::all();
 
         $departments = Department::orderBy('id','desc')->get();
         $document_language = DocumentLanguage::orderBy('id','desc')->get();
@@ -551,6 +540,93 @@ class DocumentController extends Controller
         return view('stock_document')->with('document',$document);
     }
 
+    public function getFolderCount(Request $request){
+      $year = $request->year;
+      $number = $request->number;
+      $row = $request->row;
+      $folder = $request->folder;
+      $category_id = $request->category_id;
+
+      $count = Document::where('cabinet_year',$year)->where('cabinet_number',$number)->where('row',$row)->where('folder',$folder)->where('category_id',$category_id)->orderBy('id','desc')->first();
+      $folder_count = '';
+      if($count==null){
+        $folder_count = 0;
+      }
+      else{
+          $folder_count = $count->folder_count;
+      }
+      return $folder_count;
+    }
+
+    public function getAvailableFolders(Request $request){
+        $year = $request->year;
+        $number = $request->number;
+        $row = $request->row;
+        $category_id = $request->category_id;
+        
+        $final = '';
+        $last_folder = Document::where('cabinet_year',$year)->where('cabinet_number',$number)->where('row',$row)->select('folder')->orderBy('id','desc')->first();
+        $folder_value = '';
+        if($last_folder!=''){
+            $folder_value = $last_folder->folder+1;
+        }
+        else{
+            $folder_value = 1;
+        }
+
+        $folders = Document::where('cabinet_year',$year)->where('cabinet_number',$number)->where('row',$row)->where('category_id',$category_id)->select('folder','folder_count')->orderBy('id','desc')->get();
+        
+        if(sizeof($folders)==0){
+            $final = [array(
+                'folder' => $folder_value,
+                'folder_count' => 0,
+            )];
+        }
+        else{
+            $final  =$folders->toArray();
+            $final[sizeof($final)+1] = array(
+                'folder'=>$folder_value,
+                'folder_count'=>0,
+            );
+            
+        }
+        
+        return $final;
+      }
+
+
+    public function folderView(){
+      return view('folder_view');
+    }
+
+    public function getFolders(Request $request){
+        $year = $request->cabinet_year;
+        $number = $request->cabinet_number;
+        $row = $request->row;
+
+        $folders = Document::where('cabinet_year',$year)->where('cabinet_number',$number)->where('row',$row)->groupBy('category_id')->selectRaw("MIN(folder_count) AS folder_to, MAX(folder_count) AS folder_from,folder,category_id")->get();
+        
+        // $alert= '';
+      
+        // $alert = 'نمایش اسناد '.$data['alert'].' به تاریخ ""';
+
+        // $documents->put('alert', $alert);
+        return view('folders_view')->with(['folders'=>$folders]);
+    }
+
+    public function printFolder($tag){
+      return view('print_folder')->with('tag',$tag);
+    }
+
+
+    public function getFolderData($id){
+        
+        $folder_data = Document::findOrFail($id);
+        $type = $folder_data->category->name;
+        
+        
+        
+    }
 
     /**
      * Stock a stockable item into the database
@@ -562,31 +638,25 @@ class DocumentController extends Controller
         // Validate Request
 
         $this->validate($request,[
-            'block'=>'numeric|required',
-            'section'=>'required|string',
+            'cabinet_year'=>'numeric|required',
+            'cabinet_number'=>'numeric|required',
             'row'=>'required|numeric',
-            'cabinet_row'=>'required|numeric',
-            'cabinet_column'=>'required|numeric',
-            'cabinet_side'=>'required|string',
-            'edition'=>'numeric',
+            'folder'=>'required|numeric',
+            'folder_count'=>'required|numeric',
         ]);
 
         $print_check=$request->checkbox;
-        $row = sprintf("%02d",$request->row);
-        $column = sprintf("%02d",$request->cabinet_column);
+        
         // generating lable for document
-        $label = $request->block.'-'.$request->section.'-'.$row.'-'.$request->cabinet_side.'-'.$request->cabinet_row.'-'.$request->cabinet_column.'-D'.$request->edition;
-
+        $label = $request->cabinet_year.'-'.$request->cabinet_number.'-'.$request->row.'-'.$request->folder.'-'.$request->folder_count;
 
         // get stockable document Model and store form data in it
         $document = Document::findOrFail($id);
-        $document->block = $request->block;
-        $document->section = $request->section;
-        $document->cabinet_side = $request->cabinet_side;
-        $document->row = $row;
-        $document->cabinet_row = $request->cabinet_row;
-        $document->cabinet_column = $column;
-        $document->edition = $request->edition;
+        $document->cabinet_year = $request->cabinet_year;
+        $document->cabinet_number = $request->cabinet_number;
+        $document->row = $request->row;
+        $document->folder = $request->folder;
+        $document->folder_count = $request->folder_count;
         $document->stocked_by = Auth::user()->id;
         $document->stocked_date = Verta::now();
         $document->status = 3;
@@ -684,30 +754,6 @@ class DocumentController extends Controller
       //  $i=0;
        return Datatables::of($documents)
        ->addColumn('files',function($row) {
-         //  notification generation
-         // logged in as stock
-         if(Auth::user()->hasRole('stock')) {
-           // check if the request for stock editing is accepted
-           // if notification not already generated
-           $notifications = Auth::user()->notifications->pluck('data.document_id')->toArray();
-           // if true
-           if($row['stock_edit_request_approve']==1) {
-             if(!in_array($row['id'],$notifications)) {
-               // generate request accepted notification
-               Auth::user()->notify(new RequestStatus($row['id'],'accepted',"'".$row['stock_edit_request_remarks']."' پذیرفته شد!'", 'enquiry', 'danger'));
-             }
-
-           }
-           else if($row['stock_edit_request_approve']==2) {
-             // else
-             if(!in_array($row['id'],$notifications)) {
-               // generate request rejected notification
-               Auth::user()->notify(new RequestStatus($row['id'],'rejected',"'".$row['stock_edit_request_remarks']."' رد شد!'", 'enquiry', 'success'));
-             }
-
-           }
-         }
-         //notification generation ends
 
           //  detailed information about document
           $res =  '<a href="'.route('browse_images',$row['id']).'" target="_blank" data-toggle="tooltip" data-placement="top" title="نمایش فایل و معلومات سند" class="btn" style="padding:0;"><i style="font-size:1.3em !important;" class="icon-paper-clip"></i></a>'
@@ -717,72 +763,50 @@ class DocumentController extends Controller
 
           // code for requesting stock edit
           if(Auth::user()->hasrole('stock')){
-            if(!isset($row['stock_edit_request_approve'])){
-              // if edit stock not already requested
-                $res .= '<a href="#" onclick="openModal('.$row['id'].')" data-toggle="tooltip" data-placement="top" title="درج درخواست تصحیح جابجایی" class="btn" style="padding:0;"><i style="font-size:1.3em !important;" class="icon-question"></i></a>';
-            }
-            elseif($row['stock_edit_request_approve']==1 && !isset($row['stock_updated_by'])){
-              // if request for update is approved and stock doesnt updated then show edit button
               $res .= '<a href="'.route('edit_stock',$row['id']).'" class="btn" data-toggle="tooltip" data-placement="top" title="تصحیح جابجایی اسند"  style="padding:0;"><i style="font-size:1.3em !important;" class="icon-note"></i></a>';
-            }
+            // }
 
           }
           return $res;
        })
-       // ->addColumn('stock_edit_request', function($row) {
-       //    $row['id']==0 ? 'test' : 'nothing';
-       //    return $row['id'];
-       // })
-       // ->addColumn('stock_edit_request_status', function($row) {
-       //    $row['id']==0 ? 'test' : 'nothing';
-       //    return $row['id'];
-       // })
        ->rawColumns(['files'])
        ->make();
      }
-
-     // if($row['stock_edit_request_approve']==1 && !isset($row['stock_updated_by'])){
-     //    $res .= '<a href="'.route('edit_stock',$row['id']).'" class="btn" style="padding:0;"><i style="font-size:1.3em !important;" class="icon-note"></i></a>';
-     // }
-     // if request for edit doesnt issued or the request issued but updated once then show the request button
-     // else if(!isset($row['stock_edit_request_approve'])){
-     //     $res .= '<a href="#" onclick="openModal('.$row['id'].')">request</a>';
-     // }
 
      /**
       * submit request to admin for editing stocked data
       *
       * @return \Illuminate\Http\Response
       */
-    public function submitStockEditRequest($id, Request $request){
-      $document = Document::findOrFail($id);
-      $document->stock_edit_request_date = Verta::now();
-      $document->stock_edit_request_by = Auth::user()->id;
-      $document->stock_edit_request_remarks = $request->remarks;
-      $document->stock_edit_request_approve = 0;
-      $document->save();
+    // public function submitStockEditRequest($id, Request $request){
+    //   $document = Document::findOrFail($id);
+    //   $document->stock_edit_request_date = Verta::now();
+    //   $document->stock_edit_request_by = Auth::user()->id;
+    //   $document->stock_edit_request_remarks = $request->remarks;
+    //   $document->stock_edit_request_approve = 0;
+    //   $document->save();
 
-      createLog('documents',$id,'درخواست تصحیح جابجایی سند');
-      if(auth()->user()->hasRole('stock')) {
-        $user = User::find(1);//admin
-        $notifications = $user->notifications->pluck('data.document_id')->toArray();
-        if(!in_array($id,$notifications )) {
-          $user->notify(new RequestStockEdit($id,'stock_edit', $request->remarks, 'admin', 'success' ));
-        }
-      }
+    //   createLog('documents',$id,'درخواست تصحیح جابجایی سند');
+    //   if(auth()->user()->hasRole('stock')) {
+    //     $user = User::find(1);//admin
+    //     $notifications = $user->notifications->pluck('data.document_id')->toArray();
+    //     if(!in_array($id,$notifications )) {
+    //       $user->notify(new RequestStockEdit($id,'stock_edit', $request->remarks, 'admin', 'success' ));
+    //     }
+    //   }
 
-      Session::flash('success','درخواست موفقانه ثبت گردید!!!');
-      return Redirect()->route('completed_documents');
-    }
+    //   Session::flash('success','درخواست موفقانه ثبت گردید!!!');
+    //   return Redirect()->route('completed_documents');
+    // }
 
        /**
         * show all the requests for editing stocked data to admin
         *
         * @return \Illuminate\Http\Response
-        */
-       public function stockEditRequests(){
-         return view('stock_edit_requests');
-       }
+       //  */
+       // public function stockEditRequests(){
+       //   return view('stock_edit_requests');
+       // }
 
 
      /**
@@ -790,19 +814,19 @@ class DocumentController extends Controller
       *
       * @return \Illuminate\Http\Response
       */
-      public function getEditRequestsDatatable()
-      {
+      // public function getEditRequestsDatatable()
+      // {
 
-          $requests = Document::with('category')->with('department')->select('documents.*')->where('status',3)->whereNotNull('stock_edit_request_by')->where('stock_edit_request_approve',0)->orderBy('id','desc')->get();
+      //     $requests = Document::with('category')->with('department')->select('documents.*')->where('status',3)->whereNotNull('stock_edit_request_by')->where('stock_edit_request_approve',0)->orderBy('id','desc')->get();
 
-        $i=0;
-        return Datatables::of($requests)
-        ->addColumn('files',function($row) {
-           return '<a href="'.route('show_stock_edit_request',$row['id']).'" class="btn "><i style="font-size:1.3em !important;" class="icon-eye"></i></a>';
-        })
-        ->rawColumns(['files'])
-        ->make();
-      }
+      //   $i=0;
+      //   return Datatables::of($requests)
+      //   ->addColumn('files',function($row) {
+      //      return '<a href="'.route('show_stock_edit_request',$row['id']).'" class="btn "><i style="font-size:1.3em !important;" class="icon-eye"></i></a>';
+      //   })
+      //   ->rawColumns(['files'])
+      //   ->make();
+      // }
 
 
           /**
@@ -1013,37 +1037,39 @@ class DocumentController extends Controller
 
     }
 
-    public function showStockedEditStatus(){
-      return view('show_stocked_edit_status');
-    }
+    // public function showStockedEditStatus(){
+    //   return view('show_stocked_edit_status');
+    // }
 
-    public function getStockedEditStatus(){
-      //  get completed documents request for edit stock status
-      $documents = Document::with('category')->with('department')->with('document_language')->select('documents.*')->where('status',3)->where('stocked_by',Auth::user()->id)->orderBy('id','desc')->get();
+    // public function getStockedEditStatus(){
+    //   //  get completed documents request for edit stock status
+    //   $documents = Document::with('category')->with('department')->with('document_language')->select('documents.*')->where('status',3)->where('stocked_by',Auth::user()->id)->orderBy('id','desc')->get();
 
-       return Datatables::of($documents)
-       ->addColumn('stock_edit_request',function($row){
-         if($row['stock_edit_request_date'] !=null AND $row['stock_edit_request_approve']==0){
-           return "<i class='icon-check' style='font-size:1.3em !important; color: #1fb89e !important;'></i>";
-         }
-       })
-       ->addColumn('stock_edit_request_status',function($row){
-         if($row['stock_edit_request_date'] !=null AND $row['stock_edit_request_approve']==1){
-           return "<i class='icon-check' style='font-size:1.3em !important; color: #1fb89e !important;'></i>";
-         }
+    //    return Datatables::of($documents)
+    //    ->addColumn('stock_edit_request',function($row){
+    //      if($row['stock_edit_request_date'] !=null AND $row['stock_edit_request_approve']==0){
+    //        return "<i class='icon-check' style='font-size:1.3em !important; color: #1fb89e !important;'></i>";
+    //      }
+    //    })
+    //    ->addColumn('stock_edit_request_status',function($row){
+    //      if($row['stock_edit_request_date'] !=null AND $row['stock_edit_request_approve']==1){
+    //        return "<i class='icon-check' style='font-size:1.3em !important; color: #1fb89e !important;'></i>";
+    //      }
 
-       })
-       ->addColumn('files',function($row) {
+    //    })
+    //    ->addColumn('files',function($row) {
 
-          //  detailed information about document
-          $res =  '<a href="'.route('browse_images',$row['id']).'" target="_blank" class="btn" style="padding:0;"><i style="font-size:1.3em !important;" class="icon-paper-clip"></i></a>';
+    //       //  detailed information about document
+    //       $res =  '<a href="'.route('browse_images',$row['id']).'" target="_blank" class="btn" style="padding:0;"><i style="font-size:1.3em !important;" class="icon-paper-clip"></i></a>';
 
-          return $res;
-       })
-       ->rawColumns(['files','stock_edit_request_status','stock_edit_request'])
-       ->make();
+    //       return $res;
+    //    })
+    //    ->rawColumns(['files','stock_edit_request_status','stock_edit_request'])
+    //    ->make();
 
-    }
+    // }
+
+    
     // print lable
     public function printLabel($id){
 

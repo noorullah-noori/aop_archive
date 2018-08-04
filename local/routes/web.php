@@ -131,6 +131,18 @@ Route::group(['middleware' => ['role:stock']], function () {
   // show the form to stock a single document
   Route::get('show_stockable_document_form/{id?}','DocumentController@showStockableDocumentForm')->name('show_stockable_document_form');
 
+  Route::get('get_folder_count','DocumentController@getFolderCount')->name('get_folder_count');
+
+  Route::get('get_available_folders','DocumentController@getAvailableFolders')->name('get_available_folders');
+
+  Route::get('folder_view','DocumentController@folderView')->name('folder_view');
+
+  Route::post('get_folders','DocumentController@getFolders')->name('get_folders');
+
+  Route::get('get_folder_data/{id?}','DocumentController@getFolderData')->name('get_folder_data');
+
+  Route::get('print_folder/{tag?}','DocumentController@printFolder')->name('print_folder');
+
   // submit the form to store storage i.e. block, cabinet, ... information
   Route::post('stock_document/{id?}','DocumentController@stockDocument')->name('stock_document');
 
@@ -150,13 +162,13 @@ Route::group(['middleware' => ['role:stock|admin']], function () {
     Route::get('get_completed_documents_datatable','DocumentController@getCompletedDocumentsDatatable')->name('get_completed_documents_datatable');
 
     // submit request for editing stock details
-    Route::post('submit_stock_edit_request/{id}','DocumentController@submitStockEditRequest')->name('submit_stock_edit_request');
+    // Route::post('submit_stock_edit_request/{id}','DocumentController@submitStockEditRequest')->name('submit_stock_edit_request');
 
 
     // show enquiry edit status
-    Route::get('show_stocked_edit_status','DocumentController@showStockedEditStatus')->name('show_stocked_edit_status');
+    // Route::get('show_stocked_edit_status','DocumentController@showStockedEditStatus')->name('show_stocked_edit_status');
 
-    Route::get('get_stocked_edit_status','DocumentController@getStockedEditStatus')->name('get_stocked_edit_status');
+    // Route::get('get_stocked_edit_status','DocumentController@getStockedEditStatus')->name('get_stocked_edit_status');
 
     //notice routes
     Route::resource('notice','NoticeController');
@@ -275,8 +287,8 @@ Route::any('update_language/{id?}','LanguageController@updateLanguage')->name('u
 
 
 
-// Show all requests for editing stock details from stock user to admin
-Route::get('stock_edit_requests','DocumentController@stockEditRequests')->name('stock_edit_requests');
+// // Show all requests for editing stock details from stock user to admin
+// Route::get('stock_edit_requests','DocumentController@stockEditRequests')->name('stock_edit_requests');
 
 
   // Show all requests for editing stock details from stock user to admin
@@ -289,8 +301,8 @@ Route::get('stock_edit_requests','DocumentController@stockEditRequests')->name('
   Route::post('reject_request/{id}','DocumentController@rejectRequest')->name('reject_request');
 
 
-// get datatable for all requests for stock editing
-Route::get('get_edit_requests_datatable','DocumentController@getEditRequestsDatatable')->name('get_edit_requests_datatable');
+// // get datatable for all requests for stock editing
+// Route::get('get_edit_requests_datatable','DocumentController@getEditRequestsDatatable')->name('get_edit_requests_datatable');
 
 // Route::resource('documents','DocumentController');
 

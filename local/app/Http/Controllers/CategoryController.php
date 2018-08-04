@@ -43,25 +43,25 @@ class CategoryController extends Controller
         $this->validate($request,[
             'category_name'=>'string|required|unique:categories,name',
             'category_description'=>'nullable|string',
-            'category_name_en'=>'string|required|unique:categories,name_en'
+            // 'category_name_en'=>'string|required|unique:categories,name_en'
         ]);
 
         // Create new catagory model object
-        $categories=new Category();
+        $category=new Category();
 
         // store data to model object from request
-        $categories->name=$request->category_name;
+        $category->name=$request->category_name;
 
-        $categories->name_en=$request->category_name_en;
+        // $category->name_en=$request->category_name_en;
 
-        $categories->description=$request->category_description;
+        $category->description=$request->category_description;
 
-        $categories->save();
+        $category->save();
 
         createLog('categories',$category->id,'ایجاد نوعیت سند');
 
         // flash alert i.e. print success message
-        Session::flash('success',"$categories->name موفقانه اضافه گردید");
+        Session::flash('success',"$category->name موفقانه اضافه گردید");
 
         return redirect()->route('categories.create');
 
@@ -142,7 +142,7 @@ class CategoryController extends Controller
      */
     public function getCategoryDatatable(){
 
-      $categories = Category::select(['id', 'name', 'name_en', 'description'])->orderBy('id','desc');
+      $categories = Category::select(['id', 'name', 'description'])->orderBy('id','desc');
       return Datatables::of($categories)
       ->addColumn('action',function($row) {
         //to update categories records
