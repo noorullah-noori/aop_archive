@@ -547,13 +547,13 @@ class DocumentController extends Controller
       $folder = $request->folder;
       $category_id = $request->category_id;
 
-      $count = Document::where('cabinet_year',$year)->where('cabinet_number',$number)->where('row',$row)->where('folder',$folder)->where('category_id',$category_id)->orderBy('id','desc')->first();
+      $count = Document::where('cabinet_year',$year)->where('cabinet_number',$number)->where('row',$row)->where('folder',$folder)->where('category_id',$category_id)->max('file');
       $folder_count = '';
       if($count==null){
         $folder_count = 0;
       }
       else{
-          $folder_count = $count->folder_count;
+          $folder_count = $count;
       }
       return $folder_count;
     }
@@ -596,26 +596,39 @@ class DocumentController extends Controller
 
 
     public function folderView(){
-      return view('folder_view');
+        $categories = Category::all();
+        return view('folder_view')->with('categories', $categories);
     }
 
     public function getFolders(Request $request){
+
         $year = $request->cabinet_year;
         $number = $request->cabinet_number;
         $row = $request->row;
-
-        $folders = Document::where('cabinet_year',$year)->where('cabinet_number',$number)->where('row',$row)->groupBy('category_id')->selectRaw("MIN(folder_count) AS folder_to, MAX(folder_count) AS folder_from,folder,category_id")->get();
         
+        
+        // $folders = Document::where('cabinet_year',$year)->where('cabinet_number',$number)->where('row',$row)->groupBy('category_id')->selectRaw("MIN(folder_count) AS folder_to, MAX(folder_count) AS folder_from,folder,category_id")->get();
+        // $folders = Document::with('category')->where('cabinet_year',$year)->where('cabinet_number',$number)->where('row',$row)->where('category_id', $category)->orderBy('category_id')->get();       
         // $alert= '';
       
+        $folders = Document::where('cabinet_year',$year)->where('cabinet_number',$number)->where('row',$row)->groupBy('folder')->get();
+    
         // $alert = 'نمایش اسناد '.$data['alert'].' به تاریخ ""';
 
         // $documents->put('alert', $alert);
         return view('folders_view')->with(['folders'=>$folders]);
     }
 
-    public function printFolder($tag){
-      return view('print_folder')->with('tag',$tag);
+    public function printFolder($folder){
+        $year = $_GET['year'];
+        $cabinet = $_GET['cabinet'];
+        $row = $_GET['row'];
+        $document = $_GET['document'];
+
+        $min = Document::where('cabinet_year',$year)->where('cabinet_number',$cabinet)->where('row',$row)->where('folder',$folder)->min('file');
+        $max = Document::where('cabinet_year',$year)->where('cabinet_number',$cabinet)->where('row',$row)->where('folder',$folder)->max('file');
+        
+        return view('print_folder')->with(['min'=>$min,'max'=>$max,'document'=>$document,'year'=>$year]);
     }
 
 
@@ -642,13 +655,13 @@ class DocumentController extends Controller
             'cabinet_number'=>'numeric|required',
             'row'=>'required|numeric',
             'folder'=>'required|numeric',
-            'folder_count'=>'required|numeric',
+            'file'=>'required|numeric',
         ]);
 
         $print_check=$request->checkbox;
         
         // generating lable for document
-        $label = $request->cabinet_year.'-'.$request->cabinet_number.'-'.$request->row.'-'.$request->folder.'-'.$request->folder_count;
+        $label = $request->cabinet_year.'-'.$request->cabinet_number.'-'.$request->row.'-'.$request->folder.'-'.$request->file;
 
         // get stockable document Model and store form data in it
         $document = Document::findOrFail($id);
@@ -656,7 +669,7 @@ class DocumentController extends Controller
         $document->cabinet_number = $request->cabinet_number;
         $document->row = $request->row;
         $document->folder = $request->folder;
-        $document->folder_count = $request->folder_count;
+        $document->file = $request->file;
         $document->stocked_by = Auth::user()->id;
         $document->stocked_date = Verta::now();
         $document->status = 3;

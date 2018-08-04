@@ -137,11 +137,11 @@ Route::group(['middleware' => ['role:stock']], function () {
 
   Route::get('folder_view','DocumentController@folderView')->name('folder_view');
 
-  Route::post('get_folders','DocumentController@getFolders')->name('get_folders');
+  Route::get('get_folders','DocumentController@getFolders')->name('get_folders');
 
   Route::get('get_folder_data/{id?}','DocumentController@getFolderData')->name('get_folder_data');
 
-  Route::get('print_folder/{tag?}','DocumentController@printFolder')->name('print_folder');
+  Route::get('print_folder/{folder?}','DocumentController@printFolder')->name('print_folder');
 
   // submit the form to store storage i.e. block, cabinet, ... information
   Route::post('stock_document/{id?}','DocumentController@stockDocument')->name('stock_document');

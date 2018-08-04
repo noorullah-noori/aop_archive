@@ -4,7 +4,9 @@
   <title>Folder Print</title>
 </head>
 <body>
-  <span style="direction: rtl;text-align: right;">{{$tag }}</span>    
+<span style="direction: rtl;text-align: right;">{{$document}} سال {{$year}}</span> <br>   
+<span style="direction: rtl;text-align: right;">از{{$min}} </span>
+<span style="direction: rtl;text-align: right;">الی{{$max}} </span>
 
   <script type="text/javascript">
 

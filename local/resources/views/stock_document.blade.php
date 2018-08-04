@@ -153,29 +153,36 @@
                 <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label class="control-label col-md-3">الماری</label>
+                    <label class="control-label col-md-3">سال</label>
                     <div class="col-md-9">
-                      <div class="col-md-4">
                       <select name="cabinet_year" id="cabinet_year" class="form-control">
                         <option value="">سال</option>
                         <option value="1380">1380</option>
                         <option value="1381">1381</option>
                         <option value="1382">1382</option>
                       </select>
-                      </div>
-                      <div class="col-md-4">
-                        <select name="cabinet_number" id="cabinet_number" class="form-control">
-                        <option value="">شماره</option>
+                        {{-- <input type="number" name="block" value="{{old('block')}}" placeholder="بلاک" class="form-control"> --}}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label col-md-3">الماری</label>
+                    <div class="col-md-9">
+                      <select name="cabinet_number" id="cabinet_number" class="form-control">
+                        <option value="">الماری</option>
                         <option value="01">01</option>
                         <option value="02">02</option>
                         <option value="03">03</option>
                         <option value="04">04</option>
                       </select>
-                      </div>
-                        {{-- <input type="number" name="block" value="{{old('block')}}" placeholder="بلاک" class="form-control"> --}}
                     </div>
                   </div>
                 </div>
+                </div>
+
+                <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label col-md-3">روک</label>
@@ -191,21 +198,36 @@
                     </div>
                   </div>
                 </div>
-              </div>
-                <div class="row">
+
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="control-label col-md-3">فولدر</label>
-                     <div class="col-md-9">
-                      <div class="col-md-4">
-                        <select name="folder" id="folder" class="form-control">
+                    <div class="col-md-9">
+                      <select name="folder" id="folder" class="form-control">
                         <option value="">فولدر</option>
+                        <option value="01">01</option>
+                        <option value="02">02</option>
+                        <option value="03">03</option>
+                        <option value="04">04</option>
                       </select>
+                      {{-- <input type="number" name="sequence" value="{{old('sequence')}}" placeholder="قطار" class="form-control"> --}}
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+                <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label col-md-3"> شماره فایل</label>
+                     <div class="col-md-9">
+                       <select name="file" id="file"  class="form-control select2">
+                         @for ($i =1 ; $i <= 500; $i++)
+                          <option value="{{$i}}">{{$i}}</option>
+                         @endfor
+                       </select>
                       </div>
-                      <div class="col-md-4">
-                        <input type="text" name="folder_count" class="form-control" id="folder_count">
-                      </div>
-                        {{-- <input type="number" name="block" value="{{old('block')}}" placeholder="بلاک" class="form-control"> --}}
                     </div>
                   </div>
                 </div>
@@ -266,56 +288,56 @@
   <script>
 
   
-    $("#folder").change(function(){
+    // $("#folder").change(function(){
 
-      var data = {};
+    //   var data = {};
       
-      data['year'] = $("#cabinet_year").val();
-      data['number'] = $("#cabinet_number").val();
-      data['row'] = $("#row").val();
-      data['folder'] = $("#folder").val();
-      data['category_id'] = $("#categories_id").val();
+    //   data['year'] = $("#cabinet_year").val();
+    //   data['number'] = $("#cabinet_number").val();
+    //   data['row'] = $("#row").val();
+    //   data['folder'] = $("#folder").val();
+    //   data['category_id'] = $("#categories_id").val();
 
-      $.ajax({
-        type: "GET",
-        data:data,
-        url: "{{url('get_folder_count/')}}",
-        success: function(result) {
-            result = Number(result);
-            $("#folder_count").val(result+1);
-        },
-        error: function(result) {
-            alert('error');
-        }
-    });
-    });
+    //   $.ajax({
+    //     type: "GET",
+    //     data:data,
+    //     url: "{{url('get_folder_count/')}}",
+    //     success: function(result) {
+    //         result = Number(result);
+    //         $("#file").val(result+1);
+    //     },
+    //     error: function(result) {
+    //         alert('error');
+    //     }
+    // });
+    // });
 
-    $("#row").change(function(){
+//     $("#row").change(function(){
 
-    var data = {};
+//     var data = {};
 
-    data['year'] = $("#cabinet_year").val();
-    data['number'] = $("#cabinet_number").val();
-    data['row'] = $("#row").val();
-    data['category_id'] = $("#categories_id").val();
+//     data['year'] = $("#cabinet_year").val();
+//     data['number'] = $("#cabinet_number").val();
+//     data['row'] = $("#row").val();
+//     data['category_id'] = $("#categories_id").val();
 
-    $.ajax({
-      type: "GET",
-      data:data,
-      url: "{{url('get_available_folders/')}}",
-      success: function(result) {
-        $("#folder").empty();
-        $.each(result, function(index ,val){
-          $("#folder").append(
-            $('<option></option>').val(val.folder).html("<i class='icon-folder-alt'> فولدر  "+val.folder+"</i>   ---- "+val.folder_count+"فایل ")
-          );
-        })
-      },
-      error: function(result) {
-          alert('error');
-      }
-    });
-});
+//     $.ajax({
+//       type: "GET",
+//       data:data,
+//       url: "{{url('get_available_folders/')}}",
+//       success: function(result) {
+//         $("#folder").empty();
+//         $.each(result, function(index ,val){
+//           $("#folder").append(
+//             $('<option></option>').val(val.folder).html("<i class='icon-folder-alt'> فولدر  "+val.folder+"</i>   ---- "+val.folder_count+"فایل ")
+//           );
+//         })
+//       },
+//       error: function(result) {
+//           alert('error');
+//       }
+//     });
+// });
 
   </script>
 

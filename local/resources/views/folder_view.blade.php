@@ -28,7 +28,7 @@
 
                 <label class="radio-inline">
                   <select name="cabinet_number" id="cabinet_number" class="form-control">
-                        <option value="">شماره</option>
+                        <option value="">الماری</option>
                         <option value="01">01</option>
                         <option value="02">02</option>
                         <option value="03">03</option>
@@ -46,6 +46,15 @@
                       </select>
                 </label>
 
+                {{-- <label class="radio-inline">
+                  <select name="category" id="category" class="form-control">
+                        <option value="">category</option>
+                        @foreach($categories as $category)
+                          <option value="{{$category->id}}">{{$category->name}}</option>
+                        @endforeach
+                      </select>
+                </label> --}}
+
               </div>
 
               <div class="form-group">
@@ -58,7 +67,7 @@
         </div>
         <div id="searchData">
       {{-- load ajax table --}}
-    </div>
+        </div>
   </div>
 
       {{-- {{$documents->links()}} --}}
@@ -74,11 +83,10 @@
           $('#search_form_submit').click(function(){
             var dataString = $('#search_form').serialize();
              $.ajax({
-                  type:'POST',
+                  type:'get',
                   url:'{!!URL::route("get_folders")!!}',
                   data: dataString,
                   success:function(response){
-
                      $('#searchData').html(response);
                   }
                  })
