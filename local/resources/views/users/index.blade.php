@@ -1,4 +1,3 @@
-{{-- \resources\views\users\index.blade.php --}}
 @extends('layouts.master')
 
 @section('title', 'کاربران')
@@ -6,7 +5,7 @@
 @section('content')
 
   <div class="portlet light">
-  	<div class="portlet-title">
+    <div class="portlet-title">
       <div class="caption">
           <i class="icon-user font-green-sharp"></i>
           <span class="caption-subject font-green-sharp bold uppercase">@yield('title')</span>
