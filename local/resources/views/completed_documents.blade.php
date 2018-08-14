@@ -24,6 +24,7 @@
           <table id="completed-documents-datatable" class="table table-bordered">
             <thead>
               <tr>
+                <th>#</th>
                 <th>شماره سند</th>
                 <th>تاریخ</th>
                 <th>موضوع</th>
@@ -86,6 +87,7 @@
         serverSide: true,
         ajax: '{{route('get_completed_documents_datatable')}}',
         columns: [
+          {data: 'DT_Row_Index', name: 'DT_Row_Index'},
           {data: 'number', name: 'number'},
           {data: 'date', name: 'date'},
           {data: 'subject', name: 'subject'},

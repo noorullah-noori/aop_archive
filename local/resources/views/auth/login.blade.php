@@ -8,7 +8,7 @@
                 <div class="card">
                     <div class="card-header">
                       <h4 class="text-center">
-                        سیستم آرشیف ارگ
+                        سیستم آرشیف اداره امور
                       </h4>
                     </div>
                     <div class="card-body">

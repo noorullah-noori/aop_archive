@@ -78,6 +78,7 @@ class DocumentController extends Controller
           'document_page_count'=>'required|numeric',
           'document_department'=>'required',
           'language_id'=>'required',
+          'selected_files'=>'required',
         ]);
 
         $validator->after(function($validator) use($request)
@@ -780,6 +781,7 @@ class DocumentController extends Controller
 
       //  $i=0;
        return Datatables::of($documents)
+       ->addIndexColumn()
        ->addColumn('files',function($row) {
 
           //  detailed information about document
