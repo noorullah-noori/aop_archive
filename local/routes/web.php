@@ -143,6 +143,7 @@ Route::group(['middleware' => ['role:stock']], function () {
 
   Route::get('print_folder/{folder?}','DocumentController@printFolder')->name('print_folder');
 
+
   // submit the form to store storage i.e. block, cabinet, ... information
   Route::post('stock_document/{id?}','DocumentController@stockDocument')->name('stock_document');
 

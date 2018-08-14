@@ -618,11 +618,11 @@ class DocumentController extends Controller
         $number = $request->cabinet_number;
         $row = $request->row;
 
-        
+
         // $folders = Document::where('cabinet_year',$year)->where('cabinet_number',$number)->where('row',$row)->groupBy('category_id')->selectRaw("MIN(folder_count) AS folder_to, MAX(folder_count) AS folder_from,folder,category_id")->get();
-        // $folders = Document::with('category')->where('cabinet_year',$year)->where('cabinet_number',$number)->where('row',$row)->where('category_id', $category)->orderBy('category_id')->get();       
+        // $folders = Document::with('category')->where('cabinet_year',$year)->where('cabinet_number',$number)->where('row',$row)->where('category_id', $category)->orderBy('category_id')->get();
         // $alert= '';
-      
+
         $folders = Document::where('cabinet_year',$year)->where('cabinet_number',$number)->where('row',$row)->groupBy('folder')->get();
 
         // $folders = Document::where('cabinet_year',$year)->where('cabinet_number',$number)->where('row',$row)->groupBy('category_id')->selectRaw("MIN(folder_count) AS folder_to, MAX(folder_count) AS folder_from,folder,category_id")->get();
@@ -635,6 +635,7 @@ class DocumentController extends Controller
     }
 
     public function printFolder($folder){
+      
         $year = $_GET['year'];
         $cabinet = $_GET['cabinet'];
         $row = $_GET['row'];
@@ -643,7 +644,7 @@ class DocumentController extends Controller
         $min = Document::where('cabinet_year',$year)->where('cabinet_number',$cabinet)->where('row',$row)->where('folder',$folder)->min('file');
         $max = Document::where('cabinet_year',$year)->where('cabinet_number',$cabinet)->where('row',$row)->where('folder',$folder)->max('file');
         
-        return view('print_folder')->with(['min'=>$min,'max'=>$max,'document'=>$document,'year'=>$year]);
+        return view('print_folder')->with(['min'=>$min,'max'=>$max,'document'=>$document,'year'=>$year,'folder'=>$folder]);
     }
 
 
