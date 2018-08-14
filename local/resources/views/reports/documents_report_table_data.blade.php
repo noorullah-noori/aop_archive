@@ -79,4 +79,7 @@
 </table>
 
 
+<h5>مجموعه اسناد:<span style="color:#45B6AF"> {{$documents->count()-1}}</span</h5>
+
+
 @endif
