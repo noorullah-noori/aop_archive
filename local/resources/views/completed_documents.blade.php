@@ -37,6 +37,20 @@
 
               </tr>
             </thead>
+             <tfoot>
+            <tr>
+              <td class="non_searchable"></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="non_searchable"></td>
+            </tr>
+          </tfoot>
             <tbody>
 
             </tbody>
@@ -98,7 +112,17 @@
           {data: 'label', name: 'label'},
           // {data: 'stock_edit_request_status', name: 'stock_edit_request_status'},
           {data: 'files', name: 'files', orderable: false, searchable: false}
-        ]
+        ],
+        initComplete: function () {
+          this.api().columns().every(function () {
+              var column = this;
+              var input = document.createElement("input");
+              var test = $(input).appendTo($(column.footer()).empty())
+              .on('change', function () {
+                  column.search($(this).val(), false, false, true).draw();
+              });
+          });
+      }
       });
 
     function openModal(id){
@@ -113,6 +137,9 @@
     .dataTable td {
       font-size: 13px;
     }
+    .non_searchable input {
+    display: none;
+  }
 
     </style>
 
