@@ -490,7 +490,7 @@
                 <div class="form-group">
                   <label class="control-label col-md-3"></label>
                   <div class="col-md-9">
-                    <button type="submit" class="btn blue">ثبت</button>
+                    <button type="submit" class="btn blue" id="submit" onclick="validate()">ثبت</button>
                     <button type="reset" href="#" id="reset_form" class="btn red">حذف اطلاعات</button>
                     <a href="{{route('documents.index')}}" class="btn default">بازگشت</a>
                   </div>
@@ -626,6 +626,19 @@
     $('.convert').click(function() {
       $('.result').show();
     });
+
+
+    function validate(){
+      setTimeout (function(){
+
+        document.getElementById("submit").disabled = true;
+      },0);
+      setTimeout (function(){
+        document.getElementById("submit").disabled = false;
+      },4000);
+      }
+
+
   </script>
 
 
