@@ -24,6 +24,7 @@
           <table id="completed-documents-datatable" class="table table-bordered">
             <thead>
               <tr>
+                <th>#</th>
                 <th>شماره سند</th>
                 <th>تاریخ</th>
                 <th>موضوع</th>
@@ -36,6 +37,20 @@
 
               </tr>
             </thead>
+             <tfoot>
+            <tr>
+              <td class="non_searchable"></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="non_searchable"></td>
+            </tr>
+          </tfoot>
             <tbody>
 
             </tbody>
@@ -86,6 +101,7 @@
         serverSide: true,
         ajax: '{{route('get_completed_documents_datatable')}}',
         columns: [
+          {data: 'DT_Row_Index', name: 'DT_Row_Index'},
           {data: 'number', name: 'number'},
           {data: 'date', name: 'date'},
           {data: 'subject', name: 'subject'},
@@ -96,7 +112,17 @@
           {data: 'label', name: 'label'},
           // {data: 'stock_edit_request_status', name: 'stock_edit_request_status'},
           {data: 'files', name: 'files', orderable: false, searchable: false}
-        ]
+        ],
+        initComplete: function () {
+          this.api().columns().every(function () {
+              var column = this;
+              var input = document.createElement("input");
+              var test = $(input).appendTo($(column.footer()).empty())
+              .on('change', function () {
+                  column.search($(this).val(), false, false, true).draw();
+              });
+          });
+      }
       });
 
     function openModal(id){
@@ -111,6 +137,9 @@
     .dataTable td {
       font-size: 13px;
     }
+    .non_searchable input {
+    display: none;
+  }
 
     </style>
 

@@ -20,7 +20,7 @@ p{
   <div id="contener">
 <div style="padding:10px;">
       <img src="{{asset('assets/images/afghanistan_logo.png')}}" style="height:100px; width:100px;">
-      <p> کارتن ({{$folder}}) احکام ریاست جمهوری ا.ا</p>
+      <p> کارتن ({{$folder}})</p>
       <p style="direction: rtl;">{{$document}} سال {{$year}}</p>
       <p style="direction: rtl;">از{{$min}} الی{{$max}}</p>
 </div>

@@ -167,12 +167,13 @@
                         </select>
                       </div>
                       <div class="col-md-4">
-                        <select name="cabinet_number" id="cabinet_number" class="form-control">
-                        <option value="">شماره</option>
-                        <option value="01">01</option>
-                        <option value="02">02</option>
-                        <option value="03">03</option>
-                        <option value="04">04</option>
+                        <select name="cabinet_number" id="cabinet_number" class="form-control select2">
+                        <option value=""> شماره الماری</option>
+                        <?php
+                        for ($i = 1; $i <= 20; $i++){
+                          echo"<option value='".$i."'>$i</option>";
+                        };
+                        ?>
                       </select>
                     </div>
                   </div>
@@ -184,12 +185,14 @@
                   <div class="form-group">
                     <label class="control-label col-md-3">روک</label>
                     <div class="col-md-9">
-                      <select name="row" id="row" class="form-control">
+                      <select name="row" id="row" class="form-control select2">
                         <option value="">روک</option>
-                        <option value="01">01</option>
-                        <option value="02">02</option>
-                        <option value="03">03</option>
-                        <option value="04">04</option>
+                        <?php
+                          for ($i = 1; $i <= 15; $i++){
+                            echo"<option value='".$i."'>$i</option>";
+                          };
+
+                          ?>
                       </select>
                       {{-- <input type="number" name="sequence" value="{{old('sequence')}}" placeholder="قطار" class="form-control"> --}}
                     </div>
@@ -200,12 +203,14 @@
                   <div class="form-group">
                     <label class="control-label col-md-3">فولدر</label>
                     <div class="col-md-9">
-                      <select name="folder" id="folder" class="form-control">
+                      <select name="folder" id="folder" class="form-control select2">
                         <option value="">فولدر</option>
-                        <option value="01">01</option>
-                        <option value="02">02</option>
-                        <option value="03">03</option>
-                        <option value="04">04</option>
+                        <?php
+                          for ($i = 1; $i <= 15; $i++){
+                            echo"<option value='".$i."'>$i</option>";
+                          };
+
+                          ?>
                       </select>
                       {{-- <input type="number" name="sequence" value="{{old('sequence')}}" placeholder="قطار" class="form-control"> --}}
                     </div>
